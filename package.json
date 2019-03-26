@@ -1,5 +1,5 @@
 {
-  "name": "@coreline/node-graphql-ts-template",
+  "name": "@techobabble/graphql-ts-helper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -43,7 +43,6 @@
     "pretty-error": "^2.1.1",
     "raven": "^2.6.4",
     "reflect-metadata": "^0.1.10",
-    "sqlite3": "^3.1.13",
     "ts-node": "^6.0.1",
     "type-graphql": "^0.11.2",
     "typeorm": "0.2.3"
