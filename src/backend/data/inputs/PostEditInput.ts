@@ -3,8 +3,6 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 
-import { UserNestedInput } from './UserNestedInput';
-
 // <keep-imports>
 // </keep-imports>
 
@@ -18,9 +16,6 @@ export class PostEditInput {
 
   @Field(() => String, { nullable: true })
   public title?: string | null;
-
-  @Field(() => UserNestedInput, { nullable: true })
-  public author?: UserNestedInput | null;
 
   // <keep-methods>
   // </keep-methods>

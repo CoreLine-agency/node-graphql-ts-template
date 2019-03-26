@@ -1,3 +1,8 @@
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 """ID scalar type"""
 scalar EntityId
 
@@ -6,6 +11,8 @@ type File {
   contentBase64: String!
   post: Post
   user: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
   url: String!
   thumbUrl: String!
 }
@@ -61,26 +68,25 @@ type Post {
   title: String!
   author: User!
   images: [File!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input PostCreateInput {
   content: String!
   title: String!
-  author: UserNestedInput!
 }
 
 input PostEditInput {
   id: EntityId!
   content: String
   title: String
-  author: UserNestedInput
 }
 
 input PostNestedInput {
   id: EntityId
   content: String
   title: String
-  author: UserNestedInput
 }
 
 type Query {
@@ -88,6 +94,7 @@ type Query {
   files: [File!]!
   post(id: EntityId!): Post!
   posts: [Post!]!
+  searchPosts(limit: Int, skip: Int): [Post!]!
   user(id: EntityId!): User!
   users: [User!]!
 }
@@ -100,6 +107,8 @@ type User {
   fullName: String
   posts: [Post!]!
   profileImage: File
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input UserCreateInput {

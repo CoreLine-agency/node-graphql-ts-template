@@ -131,6 +131,14 @@ export function generateSingleModel(model: ISingleErModel, ctx: IGeneratorContex
   const name = model.name;
   const autoAssignRelations = model.relations.filter(r => r.autoAssignKey);
 
+  let generatedAutoAssignRelations = '';
+  if (autoAssignRelations.length) {
+    generatedAutoAssignRelations =
+`if (getInputOperationType(this, input) === 'create') {
+      ${autoAssignRelations.map(generateContextUpdateCall).join('\\n')}
+    }`;
+  }
+
   const types = sortedUniq(model.relations.map((r) => r.otherTypeName));
 
   const oneToManyRelations = model.relations.filter((r) => r.relationType === 'many' && r.otherRelationType === 'one');
@@ -196,7 +204,8 @@ ${generateOneToOneSecondaryDeclarations(oneToOneSecondaryRelations)}
       await auth.assertCanUpdate(this, context);
     }
     Object.assign(this, data);
-${autoAssignRelations.map(generateContextUpdateCall).join('\n')}
+
+${generatedAutoAssignRelations}
 ${manyToOneRelations.filter(notAutoAssign).map(generateRelationUpdateCall).join('\n')}
 ${oneToOneOwnerRelations.filter(notAutoAssign).map(generateRelationUpdateCall).join('\n')}
 ${oneToOneSecondaryRelations.filter(notAutoAssign).map(generateRelationUpdateCall).join('\n')}

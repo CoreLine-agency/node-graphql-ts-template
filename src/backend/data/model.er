@@ -35,7 +35,7 @@ Post:
 # Optional relation can be defined by adding ? to the relation name
 
 User has many Post as posts
-Post has one User as author
+Post has one User as author = context.user
 
 User has one File as profileImage?
 File has one User as user?
