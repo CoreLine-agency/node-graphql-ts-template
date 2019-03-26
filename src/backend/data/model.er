@@ -1,0 +1,44 @@
+# Tables are defined by first capital letter and : at the end
+# - sign defines a field which is persisted in the database, visible in the create and edit mutations and queries
+# + sign defines a field which is not persisted in the database, visible in edit and create mutations, but not in database or queries
+# x sign defines a field which is persisted in the database, but not visible in queries or mutations
+# Adding a question mark at the end of the field name marks the field as optional
+# All fields are strings by default
+# If field is not string, first type written after : character is typescript type
+# If field has typescript type defined, database type for the field can be defined by adding it after the typescript type
+
+User:
+  - email?: string varchar
+  + passwordHash?: string varchar
+  x password
+  - firstName
+  - lastName
+  - fullName?: string varchar
+  + role: ADMIN|USER
+  + accountVerificationCode?: string varchar
+  + forgotPasswordCode?: string varchar
+  + googleUserId?: string varchar
+  + googleToken?: string varchar
+  + facebookUserId?: string varchar
+  + facebookAccessToken?: string varchar
+
+File:
+  - contentBase64: string text
+  + slug
+
+Post:
+  - content
+  - title
+
+# Relation between tables are defined by pairs of sentences containing table name combined `has many` or `has one`.
+# This allows us to create 1-to-1 and 1-to-N relations
+# Optional relation can be defined by adding ? to the relation name
+
+User has many Post as posts
+Post has one User as author
+
+User has one File as profileImage?
+File has one User as user?
+
+Post has many File as images
+File has one Post as post?

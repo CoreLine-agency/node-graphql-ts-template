@@ -1,0 +1,132 @@
+"""ID scalar type"""
+scalar EntityId
+
+type File {
+  id: EntityId!
+  contentBase64: String!
+  post: Post
+  user: User
+  url: String!
+  thumbUrl: String!
+}
+
+input FileCreateInput {
+  contentBase64: String!
+  post: PostNestedInput
+  user: UserNestedInput
+}
+
+input FileEditInput {
+  id: EntityId!
+  contentBase64: String
+  post: PostNestedInput
+  user: UserNestedInput
+}
+
+input FileNestedInput {
+  id: EntityId
+  contentBase64: String
+  post: PostNestedInput
+  user: UserNestedInput
+}
+
+type LoginResponse {
+  token: String!
+  user: User!
+}
+
+type Mutation {
+  emailRegister(input: UserCreateInput!): LoginResponse!
+  emailLogin(password: String!, email: String!): LoginResponse!
+  logout: Boolean!
+  facebookLogin(facebookAccessToken: String!): String!
+  googleLogin(googleAccessToken: String!): String!
+  createFile(input: FileCreateInput!): File!
+  updateFile(input: FileEditInput!): File!
+  deleteFiles(ids: [ID!]!): Boolean!
+  createPost(input: PostCreateInput!): Post!
+  updatePost(input: PostEditInput!): Post!
+  deletePosts(ids: [ID!]!): Boolean!
+  forgotPassword(email: String!): Boolean!
+  resetPassword(newPassword: String!, forgotPasswordCode: String!): LoginResponse!
+  changePassword(newPassword: String!, oldPassword: String!): Boolean!
+  createUser(input: UserCreateInput!): User!
+  updateUser(input: UserEditInput!): User!
+  deleteUsers(ids: [ID!]!): Boolean!
+}
+
+type Post {
+  id: EntityId!
+  content: String!
+  title: String!
+  author: User!
+  images: [File!]!
+}
+
+input PostCreateInput {
+  content: String!
+  title: String!
+  author: UserNestedInput!
+}
+
+input PostEditInput {
+  id: EntityId!
+  content: String
+  title: String
+  author: UserNestedInput
+}
+
+input PostNestedInput {
+  id: EntityId
+  content: String
+  title: String
+  author: UserNestedInput
+}
+
+type Query {
+  file(id: EntityId!): File!
+  files: [File!]!
+  post(id: EntityId!): Post!
+  posts: [Post!]!
+  user(id: EntityId!): User!
+  users: [User!]!
+}
+
+type User {
+  id: EntityId!
+  email: String
+  firstName: String!
+  lastName: String!
+  fullName: String
+  posts: [Post!]!
+  profileImage: File
+}
+
+input UserCreateInput {
+  email: String
+  password: String!
+  firstName: String!
+  lastName: String!
+  fullName: String
+  profileImage: FileNestedInput
+}
+
+input UserEditInput {
+  id: EntityId!
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  fullName: String
+  profileImage: FileNestedInput
+}
+
+input UserNestedInput {
+  id: EntityId
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  fullName: String
+  profileImage: FileNestedInput
+}
