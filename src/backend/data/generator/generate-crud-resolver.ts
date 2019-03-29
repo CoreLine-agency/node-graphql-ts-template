@@ -9,26 +9,54 @@ export function generateCrudResolver(model: ISingleErModel) {
 
   return (
     `// tslint:disable max-line-length
-import { Arg, Args, Mutation, Query, Info, ID, Ctx, Resolver, Root, FieldResolver } from 'type-graphql';
+import { Arg, Args, Mutation, Query, Info, ID, Ctx, Resolver, Root, FieldResolver, Int } from 'type-graphql';
 
 import { ${modelName} } from '../models/${modelName}';
 import { ${modelName}CreateInput } from '../inputs/${modelName}CreateInput';
 import { ${modelName}EditInput } from '../inputs/${modelName}EditInput';
+import { ${modelName}SearchInput } from '../inputs/${modelName}SearchInput';
+import { ${modelName}SearchOrderInput } from '../inputs/${modelName}SearchOrderInput';
 import { getFindOptions } from '../../utils/get-find-options';
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { IRequestContext } from '../IRequestContext';
 import { addEagerFlags } from '../../utils/add-eager-flags';
 import * as auth from '../../utils/auth/auth-checkers';
+import { PaginatedResponse } from '../PaginationResponse';
 
 
 // <keep-imports>
 // </keep-imports>
+
+const Paginated${modelName}Response = PaginatedResponse(${modelName});
 
 @Resolver(${modelName})
 export class ${modelName}CrudResolver {
   @Query((returns) => ${modelName})
   async ${resourceName}(@Arg('id', () => EntityIdScalar) id: number, @Info() info, @Ctx() ctx: IRequestContext) {
     return addEagerFlags(await ctx.em.findOneOrFail(${modelName}, id, getFindOptions(${modelName}, info)));
+  }
+
+  @Query(() => Paginated${modelName}Response)
+  public async search${plural(modelName)}(
+    @Arg('search') search: ${modelName}SearchInput,
+    @Arg('skip', () => Int, { nullable: true }) skip: number = 0,
+    @Arg('take', () => Int, { nullable: true }) take: number = 25,
+    @Arg('order', () => [${modelName}SearchOrderInput], { nullable: true }) order: Array<${modelName}SearchOrderInput> = [],
+    @Info() info,
+    @Ctx() ctx: IRequestContext,
+  ) {
+    const [items, total] = addEagerFlags(await ctx.em.findAndCount(${modelName}, {
+      skip,
+      take,
+      where: JSON.parse(JSON.stringify(search)),
+      order: JSON.parse(JSON.stringify(order[0] || {})),
+    }));
+
+    return {
+      items,
+      total,
+      hasMore: skip + take < total,
+    };
   }
 
   @Query((returns) => [${modelName}])

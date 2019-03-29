@@ -62,6 +62,18 @@ type Mutation {
   deleteUsers(ids: [ID!]!): Boolean!
 }
 
+enum OrderEnum {
+  DESC
+  ASC
+}
+
+type PaginatedPostResponse {
+  items: [Post!]!
+  total: Int!
+  hasMore: Boolean!
+  nextPage: Int!
+}
+
 type Post {
   id: EntityId!
   content: String!
@@ -89,14 +101,31 @@ input PostNestedInput {
   title: String
 }
 
+input PostSearchInput {
+  id: EntityId
+  content: String
+  title: String
+  author: ReferenceSearchInput
+}
+
+input PostSearchOrderInput {
+  id: OrderEnum
+  content: OrderEnum
+  title: OrderEnum
+}
+
 type Query {
   file(id: EntityId!): File!
   files: [File!]!
   post(id: EntityId!): Post!
   posts: [Post!]!
-  searchPosts(limit: Int, skip: Int): [Post!]!
+  searchPosts(order: [PostSearchOrderInput!], take: Int, skip: Int, search: PostSearchInput!): PaginatedPostResponse!
   user(id: EntityId!): User!
   users: [User!]!
+}
+
+input ReferenceSearchInput {
+  id: EntityId
 }
 
 type User {

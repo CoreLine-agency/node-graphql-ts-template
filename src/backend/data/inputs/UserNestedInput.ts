@@ -3,7 +3,6 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { UserRole } from '../enums/UserRole';
-
 import { FileNestedInput } from './FileNestedInput';
 
 // <keep-imports>

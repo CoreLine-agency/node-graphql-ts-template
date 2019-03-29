@@ -3,15 +3,15 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { UserRole } from '../enums/UserRole';
-import { FileNestedInput } from './FileNestedInput';
+import { ReferenceSearchInput } from './ReferenceSearchInput';
 
 // <keep-imports>
 // </keep-imports>
 
 @InputType()
-export class UserEditInput {
-  @Field(() => EntityIdScalar)
-  public id: EntityId;
+export class UserSearchInput {
+  @Field(() => EntityIdScalar, { nullable: true })
+  public id?: EntityId;
 
   @Field(() => String, { nullable: true })
   public email?: string | null;
@@ -28,8 +28,8 @@ export class UserEditInput {
   @Field(() => String, { nullable: true })
   public fullName?: string | null;
 
-  @Field(() => FileNestedInput, { nullable: true })
-  public profileImage?: FileNestedInput | null;
+  @Field(() => ReferenceSearchInput, { nullable: true })
+  public profileImage?: ReferenceSearchInput | null;
 
   // <keep-methods>
   // </keep-methods>

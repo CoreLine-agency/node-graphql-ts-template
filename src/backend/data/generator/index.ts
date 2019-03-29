@@ -100,6 +100,8 @@ function fileToGeneratorContext(dir: string, name: string): IGeneratorContext {
     const createInput = generateInput(model, 'create');
     const editInput = generateInput(model, 'edit');
     const nestedInput = generateInput(model, 'nested');
+    const searchInput = generateInput(model, 'search');
+    const searchOrder = generateInput(model, 'searchOrder');
     const dbModel = generateSingleModel(model, fileToGeneratorContext('models', `${name}.ts`));
     const resolver = generateFieldResolver(model);
     const crudResolver = generateCrudResolver(model);
@@ -109,6 +111,9 @@ function fileToGeneratorContext(dir: string, name: string): IGeneratorContext {
     await writeToFile(createInput, 'inputs', `${name}CreateInput.ts`, true);
     await writeToFile(editInput, 'inputs', `${name}EditInput.ts`, true);
     await writeToFile(nestedInput, 'inputs', `${name}NestedInput.ts`, true);
+    await writeToFile(searchInput, 'inputs', `${name}SearchInput.ts`, true);
+    await writeToFile(searchOrder, 'inputs', `${name}SearchOrderInput.ts`, true);
+
     await writeToFile(dbModel, 'models', `${name}.ts`, true);
     await writeToFile(resolver, 'field-resolvers', `${name}Resolver.ts`, false);
     await writeToFile(crudResolver, 'resolvers', `${name}CrudResolver.ts`, true);

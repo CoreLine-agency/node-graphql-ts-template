@@ -1,9 +1,17 @@
-import { upperFirst } from 'lodash';
+import { uniq, upperFirst } from 'lodash';
 import { generateEnumsImports, generateFieldDeco, getFieldName, getTsTypeName } from './generate-base';
 import { IFieldDefinition, ISingleErModel, ISingleErRelation } from './model-types';
 
+function getImportPath(type: string) {
+  if (type === 'SortOrderEnum') {
+    return `../SortOrderEnum`;
+  }
+
+  return `./${type}`;
+}
 export function generateNestedInputsImports(fields: Array<IFieldDefinition>) {
-  return fields.map((field) => `import { ${field.type} } from './${field.type}'`).join('\n');
+  return fields
+    .map((field) => `import { ${field.type} } from '${getImportPath(field.type)}'`);
 }
 
 export function generateField(field: IFieldDefinition) {
@@ -19,10 +27,21 @@ export function makeOptional(field: IFieldDefinition): IFieldDefinition {
   };
 }
 
-export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | 'nested') {
+export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | 'nested' | 'search' | 'searchOrder') {
   const name = model.name;
 
-  const transform = type === 'edit' || type === 'nested' ? makeOptional : (x) => x;
+  const transform = type === 'create' ? (x) => x : makeOptional;
+
+  const getOtherType = (r: ISingleErRelation) => {
+    if (type === 'search') {
+      return 'ReferenceSearchInput';
+    }
+    if (type === 'searchOrder') {
+      return 'SortOrderEnum';
+    }
+
+    return `${r.otherTypeName}NestedInput`;
+  };
 
   const inputFields = model.fields.filter((f) => f.visibility !== '+').map(transform);
   const relations = model.relations.filter(r => !r.autoAssignKey);
@@ -32,7 +51,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
     dbType: undefined,
     name: r.myName,
     optional: r.optional,
-    type: `${r.otherTypeName}NestedInput`,
+    type: getOtherType(r),
     visibility: '',
     modelName: name,
   })).map(transform);
@@ -42,21 +61,21 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
     dbType: undefined,
     name: r.myName,
     optional: r.optional || r.isFirst,
-    type: `${r.otherTypeName}NestedInput`,
+    type: getOtherType(r),
     visibility: '',
     modelName: name,
   })).map(transform);
 
   const idFields: Array<IFieldDefinition> = [];
-  if (type === 'edit' || type === 'nested') {
+  if (type !== 'create') {
     idFields.push({
       dbType: undefined,
-      name: `id`,
-      optional: type === 'nested',
+      name: 'id',
+      optional: type !== 'edit',
       type: 'EntityId',
       visibility: '',
       modelName: name,
-      notNullable: type === 'nested',
+      notNullable: type !== 'edit',
     });
   }
 
@@ -67,8 +86,10 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 ${generateEnumsImports(model.fields)}
-${generateNestedInputsImports(manyToOneFields)}
-${generateNestedInputsImports(oneToOneFields)}
+${uniq([
+  ...generateNestedInputsImports(manyToOneFields),
+  ...generateNestedInputsImports(oneToOneFields),
+]).join('\n')}
 
 // <keep-imports>
 // </keep-imports>

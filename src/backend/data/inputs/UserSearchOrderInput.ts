@@ -3,30 +3,33 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { UserRole } from '../enums/UserRole';
-import { FileNestedInput } from './FileNestedInput';
+import { SortOrderEnum } from '../SortOrderEnum';
 
 // <keep-imports>
 // </keep-imports>
 
 @InputType()
-export class UserCreateInput {
+export class UserSearchOrderInput {
+  @Field(() => EntityIdScalar, { nullable: true })
+  public id?: EntityId;
+
   @Field(() => String, { nullable: true })
   public email?: string | null;
 
-  @Field(() => String)
-  public password: string;
+  @Field(() => String, { nullable: true })
+  public password?: string | null;
 
-  @Field(() => String)
-  public firstName: string;
+  @Field(() => String, { nullable: true })
+  public firstName?: string | null;
 
-  @Field(() => String)
-  public lastName: string;
+  @Field(() => String, { nullable: true })
+  public lastName?: string | null;
 
   @Field(() => String, { nullable: true })
   public fullName?: string | null;
 
-  @Field(() => FileNestedInput, { nullable: true })
-  public profileImage?: FileNestedInput | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public profileImage?: SortOrderEnum | null;
 
   // <keep-methods>
   // </keep-methods>
