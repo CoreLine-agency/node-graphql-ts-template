@@ -25,9 +25,6 @@ export class UserNestedInput {
   @Field(() => String, { nullable: true })
   public lastName?: string | null;
 
-  @Field(() => String, { nullable: true })
-  public fullName?: string | null;
-
   @Field(() => FileNestedInput, { nullable: true })
   public profileImage?: FileNestedInput | null;
 

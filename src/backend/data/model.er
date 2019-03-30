@@ -13,7 +13,6 @@ User:
   x password
   - firstName
   - lastName
-  - fullName?: string varchar
   + role: ADMIN|USER
   + accountVerificationCode?: string varchar
   + forgotPasswordCode?: string varchar

@@ -164,11 +164,11 @@ type User {
   email: String
   firstName: String!
   lastName: String!
-  fullName: String
   posts: [Post!]!
   profileImage: File
   createdAt: DateTime!
   updatedAt: DateTime!
+  fullName: String!
 }
 
 input UserCreateInput {
@@ -176,7 +176,6 @@ input UserCreateInput {
   password: String!
   firstName: String!
   lastName: String!
-  fullName: String
   profileImage: FileNestedInput
 }
 
@@ -186,7 +185,6 @@ input UserEditInput {
   password: String
   firstName: String
   lastName: String
-  fullName: String
   profileImage: FileNestedInput
 }
 
@@ -196,7 +194,6 @@ input UserNestedInput {
   password: String
   firstName: String
   lastName: String
-  fullName: String
   profileImage: FileNestedInput
 }
 
@@ -206,7 +203,6 @@ input UserSearchInput {
   password: String
   firstName: String
   lastName: String
-  fullName: String
   profileImage: ReferenceSearchInput
 }
 
@@ -216,6 +212,5 @@ input UserSearchOrderInput {
   password: OrderEnum
   firstName: OrderEnum
   lastName: OrderEnum
-  fullName: OrderEnum
   profileImage: OrderEnum
 }

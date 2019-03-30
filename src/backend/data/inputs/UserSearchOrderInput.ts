@@ -26,9 +26,6 @@ export class UserSearchOrderInput {
   public lastName?: SortOrderEnum | null;
 
   @Field(() => SortOrderEnum, { nullable: true })
-  public fullName?: SortOrderEnum | null;
-
-  @Field(() => SortOrderEnum, { nullable: true })
   public profileImage?: SortOrderEnum | null;
 
   // <keep-methods>

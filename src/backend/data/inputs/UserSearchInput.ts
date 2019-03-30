@@ -25,9 +25,6 @@ export class UserSearchInput {
   @Field(() => String, { nullable: true })
   public lastName?: string | null;
 
-  @Field(() => String, { nullable: true })
-  public fullName?: string | null;
-
   @Field(() => ReferenceSearchInput, { nullable: true })
   public profileImage?: ReferenceSearchInput | null;
 

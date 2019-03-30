@@ -60,13 +60,6 @@ export class User implements IAuthorizable {
   })
   public lastName: string;
 
-  @Field(() => String, { nullable: true })
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public fullName?: string | null;
-
   @Column({enum: UserRole,
     // <custom-column-args>
     // </custom-column-args>
