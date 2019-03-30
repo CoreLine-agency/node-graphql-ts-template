@@ -6,6 +6,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, One
 import { Post } from './Post';
 import { User } from './User';
 
+import { asPromise } from '../../utils/as-promise';
 import * as auth from '../../utils/auth/auth-checkers';
 import { IAuthorizable } from '../../utils/auth/IAuthorizable';
 import { getInputOperationType } from '../../utils/get-input-operation-type';
@@ -26,7 +27,7 @@ import * as crypto from 'crypto';
 @Entity()
 @ObjectType()
 export class File implements IAuthorizable {
-  @Field((type) => EntityIdScalar)
+  @Field(() => EntityIdScalar)
   @PrimaryGeneratedColumn()
   public id: EntityId;
 
@@ -46,12 +47,12 @@ export class File implements IAuthorizable {
   })
   public slug: string;
 
-  @ManyToOne((type) => Post, (post) => post.images , { nullable: true, onDelete: 'SET NULL' })
-  @Field((returns) => Post , { nullable: true })
+  @ManyToOne(() => Post, (post) => post.images , { nullable: true, onDelete: 'SET NULL' })
+  @Field(() => Post , { nullable: true })
   public post: Promise<Post | undefined | null>;
 
-  @OneToOne((type) => User, (user) => user.profileImage , { nullable: true, onDelete: 'SET NULL' })
-  @Field((returns) => User , { nullable: true })
+  @OneToOne(() => User, (user) => user.profileImage , { nullable: true, onDelete: 'SET NULL' })
+  @Field(() => User , { nullable: true })
   @JoinColumn()
   public user: Promise<User | undefined | null>;
 

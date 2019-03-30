@@ -3,6 +3,7 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
+import { asPromise } from '../../utils/as-promise';
 import * as auth from '../../utils/auth/auth-checkers';
 import { IAuthorizable } from '../../utils/auth/IAuthorizable';
 import { getInputOperationType } from '../../utils/get-input-operation-type';
@@ -26,7 +27,7 @@ import { hashPassword, verifyPassword } from '../../utils/crypto';
 @Entity()
 @ObjectType()
 export class User implements IAuthorizable {
-  @Field((type) => EntityIdScalar)
+  @Field(() => EntityIdScalar)
   @PrimaryGeneratedColumn()
   public id: EntityId;
 
@@ -108,12 +109,12 @@ export class User implements IAuthorizable {
   })
   public facebookAccessToken?: string | null;
 
-  @OneToMany((type) => Post, (post) => post.author)
-  @Field((returns) => [Post])
+  @OneToMany(() => Post, (post) => post.author)
+  @Field(() => [Post])
   public posts: Promise<Array<Post>>;
 
-  @OneToOne((type) => File, (file) => file.user)
-  @Field((returns) => File , { nullable: true })
+  @OneToOne(() => File, (file) => file.user)
+  @Field(() => File , { nullable: true })
   public profileImage: Promise<File | undefined | null>;
 
   @CreateDateColumn()

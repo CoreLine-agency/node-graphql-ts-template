@@ -31,6 +31,7 @@ async function bootstrap() {
       appRoot.resolve('src/backend/data/field-resolvers/*.ts'),
     ],
     globalMiddlewares: [AuthorizationMiddleware],
+    validate: false,
   });
   createGraphqlFile(schema);
   await createSchemaJsonFile(schema);

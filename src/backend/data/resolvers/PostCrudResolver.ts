@@ -21,25 +21,28 @@ const PaginatedPostResponse = PaginatedResponse(Post);
 
 @Resolver(Post)
 export class PostCrudResolver {
-  @Query((returns) => Post)
+  @Query(() => Post)
   public async post(@Arg('id', () => EntityIdScalar) id: number, @Info() info, @Ctx() ctx: IRequestContext) {
     return addEagerFlags(await ctx.em.findOneOrFail(Post, id, getFindOptions(Post, info)));
   }
 
   @Query(() => PaginatedPostResponse)
   public async searchPosts(
-    @Arg('search') search: PostSearchInput,
+    @Arg('search', () => PostSearchInput, { nullable: true }) search: PostSearchInput | null = null,
     @Arg('skip', () => Int, { nullable: true }) skip: number = 0,
     @Arg('take', () => Int, { nullable: true }) take: number = 25,
     @Arg('order', () => [PostSearchOrderInput], { nullable: true }) order: Array<PostSearchOrderInput> = [],
     @Info() info,
     @Ctx() ctx: IRequestContext,
   ) {
+    const defaultFindOptions = getFindOptions(Post, info, { transformQueryPath: x => x.replace(/^items./, '') });
+
     const [items, total] = addEagerFlags(await ctx.em.findAndCount(Post, {
+      ...defaultFindOptions,
       skip,
       take,
       where: JSON.parse(JSON.stringify(search)),
-      order: JSON.parse(JSON.stringify(order[0] || {})),
+      order: JSON.parse(JSON.stringify(Object.assign({}, ...order))),
     }));
 
     return {
@@ -49,12 +52,12 @@ export class PostCrudResolver {
     };
   }
 
-  @Query((returns) => [Post])
+  @Query(() => [Post])
   public async posts(@Info() info, @Ctx() ctx: IRequestContext) {
     return addEagerFlags(await ctx.em.find(Post, getFindOptions(Post, info)));
   }
 
-  @Mutation((returns) => Post)
+  @Mutation(() => Post)
   public async createPost(@Arg('input') input: PostCreateInput, @Ctx() ctx: IRequestContext): Promise<Post> {
     const model = new Post();
     await model.update(input, ctx);
@@ -64,7 +67,7 @@ export class PostCrudResolver {
     return model;
   }
 
-  @Mutation((returns) => Post)
+  @Mutation(() => Post)
   public async updatePost(@Arg('input') input: PostEditInput, @Ctx() ctx: IRequestContext) {
     const model = await ctx.em.findOneOrFail(Post, input.id);
     await model.update(input, ctx);
@@ -77,7 +80,7 @@ export class PostCrudResolver {
     return model;
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   public async deletePosts(@Arg('ids', () => [ID]) ids: Array<EntityId>, @Ctx() ctx: IRequestContext): Promise<boolean> {
     const entities = await ctx.em.findByIds(Post, ids);
     await auth.assertCanDelete(entities, ctx);

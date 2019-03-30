@@ -3,6 +3,8 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 
+import { ReferenceSearchInput } from './ReferenceSearchInput';
+
 // <keep-imports>
 // </keep-imports>
 
@@ -16,6 +18,9 @@ export class PostSearchInput {
 
   @Field(() => String, { nullable: true })
   public title?: string | null;
+
+  @Field(() => ReferenceSearchInput, { nullable: true })
+  public author?: ReferenceSearchInput | null;
 
   // <keep-methods>
   // </keep-methods>

@@ -31,25 +31,28 @@ const Paginated${modelName}Response = PaginatedResponse(${modelName});
 
 @Resolver(${modelName})
 export class ${modelName}CrudResolver {
-  @Query((returns) => ${modelName})
+  @Query(() => ${modelName})
   async ${resourceName}(@Arg('id', () => EntityIdScalar) id: number, @Info() info, @Ctx() ctx: IRequestContext) {
     return addEagerFlags(await ctx.em.findOneOrFail(${modelName}, id, getFindOptions(${modelName}, info)));
   }
 
   @Query(() => Paginated${modelName}Response)
   public async search${plural(modelName)}(
-    @Arg('search') search: ${modelName}SearchInput,
+    @Arg('search', () => ${modelName}SearchInput, { nullable: true }) search: ${modelName}SearchInput | null = null,
     @Arg('skip', () => Int, { nullable: true }) skip: number = 0,
     @Arg('take', () => Int, { nullable: true }) take: number = 25,
     @Arg('order', () => [${modelName}SearchOrderInput], { nullable: true }) order: Array<${modelName}SearchOrderInput> = [],
     @Info() info,
     @Ctx() ctx: IRequestContext,
   ) {
+    const defaultFindOptions = getFindOptions(${modelName}, info, { transformQueryPath: x => x.replace(/^items./, '') });
+
     const [items, total] = addEagerFlags(await ctx.em.findAndCount(${modelName}, {
+      ...defaultFindOptions,
       skip,
       take,
       where: JSON.parse(JSON.stringify(search)),
-      order: JSON.parse(JSON.stringify(order[0] || {})),
+      order: JSON.parse(JSON.stringify(Object.assign({}, ...order))),
     }));
 
     return {
@@ -59,12 +62,12 @@ export class ${modelName}CrudResolver {
     };
   }
 
-  @Query((returns) => [${modelName}])
+  @Query(() => [${modelName}])
   async ${plural(resourceName)}(@Info() info, @Ctx() ctx: IRequestContext) {
     return addEagerFlags(await ctx.em.find(${modelName}, getFindOptions(${modelName}, info)));
   }
 
-  @Mutation((returns) => ${modelName})
+  @Mutation(() => ${modelName})
   async create${modelName}(@Arg('input') input: ${modelName}CreateInput, @Ctx() ctx: IRequestContext): Promise<${modelName}> {
     const model = new ${modelName}();
     await model.update(input, ctx);
@@ -74,7 +77,7 @@ export class ${modelName}CrudResolver {
     return model;
   }
 
-  @Mutation((returns) => ${modelName})
+  @Mutation(() => ${modelName})
   async update${modelName}(@Arg('input') input: ${modelName}EditInput, @Ctx() ctx: IRequestContext) {
     const model = await ctx.em.findOneOrFail(${modelName}, input.id);
     await model.update(input, ctx);
@@ -87,7 +90,7 @@ export class ${modelName}CrudResolver {
     return model;
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async delete${plural(modelName)}(@Arg('ids', () => [ID]) ids: Array<EntityId>, @Ctx() ctx: IRequestContext): Promise<boolean> {
     const entities = await ctx.em.findByIds(${modelName}, ids);
     await auth.assertCanDelete(entities, ctx);

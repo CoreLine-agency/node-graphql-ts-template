@@ -3,19 +3,24 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 
+import { SortOrderEnum } from '../SortOrderEnum';
+
 // <keep-imports>
 // </keep-imports>
 
 @InputType()
 export class PostSearchOrderInput {
-  @Field(() => EntityIdScalar, { nullable: true })
-  public id?: EntityId;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public id?: SortOrderEnum;
 
-  @Field(() => String, { nullable: true })
-  public content?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public content?: SortOrderEnum | null;
 
-  @Field(() => String, { nullable: true })
-  public title?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public title?: SortOrderEnum | null;
+
+  @Field(() => SortOrderEnum, { nullable: true })
+  public author?: SortOrderEnum | null;
 
   // <keep-methods>
   // </keep-methods>

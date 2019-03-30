@@ -6,6 +6,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, One
 import { File } from './File';
 import { User } from './User';
 
+import { asPromise } from '../../utils/as-promise';
 import * as auth from '../../utils/auth/auth-checkers';
 import { IAuthorizable } from '../../utils/auth/IAuthorizable';
 import { getInputOperationType } from '../../utils/get-input-operation-type';
@@ -25,7 +26,7 @@ import {  } from './update-operations/post-update-operations';
 @Entity()
 @ObjectType()
 export class Post implements IAuthorizable {
-  @Field((type) => EntityIdScalar)
+  @Field(() => EntityIdScalar)
   @PrimaryGeneratedColumn()
   public id: EntityId;
 
@@ -45,12 +46,12 @@ export class Post implements IAuthorizable {
   })
   public title: string;
 
-  @ManyToOne((type) => User, (user) => user.posts , { nullable: false, onDelete: 'CASCADE' })
-  @Field((returns) => User , { nullable: false })
+  @ManyToOne(() => User, (user) => user.posts , { nullable: false, onDelete: 'CASCADE' })
+  @Field(() => User , { nullable: false })
   public author: Promise<User>;
 
-  @OneToMany((type) => File, (file) => file.post)
-  @Field((returns) => [File])
+  @OneToMany(() => File, (file) => file.post)
+  @Field(() => [File])
   public images: Promise<Array<File>>;
 
   @CreateDateColumn()
@@ -69,7 +70,7 @@ export class Post implements IAuthorizable {
     Object.assign(this, data);
 
     if (getInputOperationType(this, input) === 'create') {
-      this.author = Promise.resolve(await this.author || await context.user);
+      this.author = asPromise(await this.author || await context.user);
     }
 
     context.modelsToSave.push(this);

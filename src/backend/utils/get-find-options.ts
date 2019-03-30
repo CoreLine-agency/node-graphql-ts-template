@@ -42,15 +42,23 @@ function isPathRelation(path: Array<string>, meta: EntityMetadata) {
   return isPathRelation(tail(path), relation.inverseEntityMetadata);
 }
 
-export function getRelations(EntityType, queryInfo): Array<string> {
+export function getRelations(EntityType, queryInfo, opts: IGetFindOptionsOpts): Array<string> {
   const { metadata } = getRepository(EntityType);
-  const paths = getPaths(getFieldNames(queryInfo));
+  const paths = getPaths(getFieldNames(queryInfo).map(opts.transformQueryPath));
 
   return paths.filter((path) => isPathRelation(path.split('.'), metadata));
 }
 
-export function getFindOptions(EntityType, info, context = {}): any {
-  const relations = getRelations(EntityType, info);
+export interface IGetFindOptionsOpts {
+  transformQueryPath(path: string): string;
+}
+
+const getFindOptionsOptsDefault: IGetFindOptionsOpts = {
+  transformQueryPath: x => x,
+};
+
+export function getFindOptions(EntityType, info, opts = getFindOptionsOptsDefault): any {
+  const relations = getRelations(EntityType, info, opts);
 
   return {
     order: {

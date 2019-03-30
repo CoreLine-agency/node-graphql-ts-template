@@ -10,11 +10,11 @@ import { SortOrderEnum } from '../SortOrderEnum';
 
 @InputType()
 export class FileSearchOrderInput {
-  @Field(() => EntityIdScalar, { nullable: true })
-  public id?: EntityId;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public id?: SortOrderEnum;
 
-  @Field(() => String, { nullable: true })
-  public contentBase64?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public contentBase64?: SortOrderEnum | null;
 
   @Field(() => SortOrderEnum, { nullable: true })
   public post?: SortOrderEnum | null;

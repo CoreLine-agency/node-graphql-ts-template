@@ -10,23 +10,23 @@ import { SortOrderEnum } from '../SortOrderEnum';
 
 @InputType()
 export class UserSearchOrderInput {
-  @Field(() => EntityIdScalar, { nullable: true })
-  public id?: EntityId;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public id?: SortOrderEnum;
 
-  @Field(() => String, { nullable: true })
-  public email?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public email?: SortOrderEnum | null;
 
-  @Field(() => String, { nullable: true })
-  public password?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public password?: SortOrderEnum | null;
 
-  @Field(() => String, { nullable: true })
-  public firstName?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public firstName?: SortOrderEnum | null;
 
-  @Field(() => String, { nullable: true })
-  public lastName?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public lastName?: SortOrderEnum | null;
 
-  @Field(() => String, { nullable: true })
-  public fullName?: string | null;
+  @Field(() => SortOrderEnum, { nullable: true })
+  public fullName?: SortOrderEnum | null;
 
   @Field(() => SortOrderEnum, { nullable: true })
   public profileImage?: SortOrderEnum | null;

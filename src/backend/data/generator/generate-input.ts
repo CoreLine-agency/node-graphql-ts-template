@@ -27,10 +27,18 @@ export function makeOptional(field: IFieldDefinition): IFieldDefinition {
   };
 }
 
+export function makeSortOrderEnumType(field: IFieldDefinition): IFieldDefinition {
+  return {
+    ...field,
+    type: 'SortOrderEnum',
+  };
+}
+
 export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | 'nested' | 'search' | 'searchOrder') {
   const name = model.name;
 
-  const transform = type === 'create' ? (x) => x : makeOptional;
+  const transformToOptional = type === 'create' ? (x) => x : makeOptional;
+  const transformToSearchOrder = type === 'searchOrder' ? makeSortOrderEnumType : (x) => x;
 
   const getOtherType = (r: ISingleErRelation) => {
     if (type === 'search') {
@@ -43,8 +51,13 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
     return `${r.otherTypeName}NestedInput`;
   };
 
-  const inputFields = model.fields.filter((f) => f.visibility !== '+').map(transform);
-  const relations = model.relations.filter(r => !r.autoAssignKey);
+  const inputFields = model
+    .fields
+    .filter((f) => f.visibility !== '+')
+    .map(transformToOptional)
+    .map(transformToSearchOrder);
+
+  const relations = model.relations.filter(r => !r.autoAssignKey || ['search', 'searchOrder'].includes(type));
 
   const manyToOneRelations = relations.filter((r) => r.relationType === 'one' && r.otherRelationType === 'many');
   const manyToOneFields = manyToOneRelations.map((r): IFieldDefinition => ({
@@ -54,7 +67,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
     type: getOtherType(r),
     visibility: '',
     modelName: name,
-  })).map(transform);
+  })).map(transformToOptional);
 
   const oneToOneRelations = relations.filter((r) => r.relationType === 'one' && r.otherRelationType === 'one');
   const oneToOneFields = oneToOneRelations.map((r): IFieldDefinition => ({
@@ -64,7 +77,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
     type: getOtherType(r),
     visibility: '',
     modelName: name,
-  })).map(transform);
+  })).map(transformToOptional);
 
   const idFields: Array<IFieldDefinition> = [];
   if (type !== 'create') {
@@ -72,7 +85,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
       dbType: undefined,
       name: 'id',
       optional: type !== 'edit',
-      type: 'EntityId',
+      type: type === 'searchOrder' ? 'SortOrderEnum' : 'EntityId',
       visibility: '',
       modelName: name,
       notNullable: type !== 'edit',
@@ -87,9 +100,10 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
 import { EntityId, EntityIdScalar } from '../EntityId';
 ${generateEnumsImports(model.fields)}
 ${uniq([
+  type === 'searchOrder' ? "import { SortOrderEnum } from '../SortOrderEnum'" : '',
   ...generateNestedInputsImports(manyToOneFields),
   ...generateNestedInputsImports(oneToOneFields),
-]).join('\n')}
+]).filter(x => x).join('\n')}
 
 // <keep-imports>
 // </keep-imports>

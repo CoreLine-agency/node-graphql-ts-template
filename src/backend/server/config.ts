@@ -2,7 +2,7 @@
 
 export default {
   databaseType: process.env.DATABASE_TYPE || 'sqlite',
-  databaseSynchronize: !!process.env.DATABASE_SYNCHRONIZE,
+  databaseSynchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
   databaseLogging: process.env.DATABASE_LOGGING === 'true',
   environment: process.env.NODE_ENV!,
   port: process.env.PORT || 5001,

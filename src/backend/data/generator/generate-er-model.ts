@@ -14,8 +14,8 @@ export function generateOneToOneOwnerDeclarations(relations: Array<ISingleErRela
   const nullableRelations: Array<ISingleErRelation> = relations.map((r) => ({ ...r, optional: true }));
 
   return nullableRelations.map((r) =>
-    `  @OneToOne((type) => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName})
-  @Field((returns) => ${r.otherTypeName} ${generateFieldArgs(r)})
+    `  @OneToOne(() => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName})
+  @Field(() => ${r.otherTypeName} ${generateFieldArgs(r)})
   public ${getRelationName(r)}: Promise<${getRelationOtherTypeName(r)}>;
 `);
 }
@@ -27,8 +27,8 @@ export function generateOneToOneSecondaryDeclarations(relations: Array<ISingleEr
 
   return relations.map((r) => {
     return (
-      `  @OneToOne((type) => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName} ${generateRelationArgs(r)})
-  @Field((returns) => ${r.otherTypeName} ${generateFieldArgs(r)})
+      `  @OneToOne(() => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName} ${generateRelationArgs(r)})
+  @Field(() => ${r.otherTypeName} ${generateFieldArgs(r)})
   @JoinColumn()
   public ${getRelationName(r)}: Promise<${getRelationOtherTypeName(r)}>;
 `); }).join('\n\n');
@@ -40,8 +40,8 @@ export function generateOneToManyDeclarations(relations: Array<ISingleErRelation
   }
 
   return relations.map((r) =>
-    `  @OneToMany((type) => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName})
-  @Field((returns) => [${r.otherTypeName}])
+    `  @OneToMany(() => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName})
+  @Field(() => [${r.otherTypeName}])
   public ${r.myName}: Promise<Array<${r.otherTypeName}>>;`).join('\n\n');
 }
 
@@ -80,8 +80,8 @@ export function generateManyToOneDeclarations(relations: Array<ISingleErRelation
   }
 
   return relations.map((r) =>
-    `  @ManyToOne((type) => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName} ${generateRelationArgs(r)})
-  @Field((returns) => ${r.otherTypeName} ${generateFieldArgs(r)})
+    `  @ManyToOne(() => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName} ${generateRelationArgs(r)})
+  @Field(() => ${r.otherTypeName} ${generateFieldArgs(r)})
   public ${getRelationName(r)}: Promise<${getRelationOtherTypeName(r)}>;`).join('\n\n');
 }
 
@@ -102,7 +102,7 @@ function generateRelationUpdateCall(relation: ISingleErRelation) {
 function generateContextUpdateCall(relation: ISingleErRelation) {
   const fieldName = getFieldName(relation);
 
-  return `this.${fieldName} = Promise.resolve(await this.${fieldName} || await ${relation.autoAssignKey})`;
+  return `this.${fieldName} = asPromise(await this.${fieldName} || await ${relation.autoAssignKey})`;
 }
 
 function generateRelationUpdateImports(modelName: string, relations: Array<ISingleErRelation>) {
@@ -164,6 +164,7 @@ import { IAuthorizable } from '../../utils/auth/IAuthorizable';
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { ${name}Auth } from '../auth/${name}Auth';
 import { getInputOperationType } from '../../utils/get-input-operation-type';
+import { asPromise } from '../../utils/as-promise';
 ${generateRelationUpdateImports(model.name, model.relations.filter((r) => r.relationType === 'one'))}
 
 // <keep-imports>
@@ -174,7 +175,7 @@ ${generateRelationUpdateImports(model.name, model.relations.filter((r) => r.rela
 @Entity()
 @ObjectType()
 export class ${name} implements IAuthorizable {
-  @Field((type) => EntityIdScalar)
+  @Field(() => EntityIdScalar)
   @PrimaryGeneratedColumn()
   id: EntityId;
 

@@ -37,6 +37,20 @@ input FileNestedInput {
   user: UserNestedInput
 }
 
+input FileSearchInput {
+  id: EntityId
+  contentBase64: String
+  post: ReferenceSearchInput
+  user: ReferenceSearchInput
+}
+
+input FileSearchOrderInput {
+  id: OrderEnum
+  contentBase64: OrderEnum
+  post: OrderEnum
+  user: OrderEnum
+}
+
 type LoginResponse {
   token: String!
   user: User!
@@ -67,8 +81,22 @@ enum OrderEnum {
   ASC
 }
 
+type PaginatedFileResponse {
+  items: [File!]!
+  total: Int!
+  hasMore: Boolean!
+  nextPage: Int!
+}
+
 type PaginatedPostResponse {
   items: [Post!]!
+  total: Int!
+  hasMore: Boolean!
+  nextPage: Int!
+}
+
+type PaginatedUserResponse {
+  items: [User!]!
   total: Int!
   hasMore: Boolean!
   nextPage: Int!
@@ -112,15 +140,18 @@ input PostSearchOrderInput {
   id: OrderEnum
   content: OrderEnum
   title: OrderEnum
+  author: OrderEnum
 }
 
 type Query {
   file(id: EntityId!): File!
+  searchFiles(order: [FileSearchOrderInput!], take: Int, skip: Int, search: FileSearchInput): PaginatedFileResponse!
   files: [File!]!
   post(id: EntityId!): Post!
+  searchPosts(order: [PostSearchOrderInput!], take: Int, skip: Int, search: PostSearchInput): PaginatedPostResponse!
   posts: [Post!]!
-  searchPosts(order: [PostSearchOrderInput!], take: Int, skip: Int, search: PostSearchInput!): PaginatedPostResponse!
   user(id: EntityId!): User!
+  searchUsers(order: [UserSearchOrderInput!], take: Int, skip: Int, search: UserSearchInput): PaginatedUserResponse!
   users: [User!]!
 }
 
@@ -167,4 +198,24 @@ input UserNestedInput {
   lastName: String
   fullName: String
   profileImage: FileNestedInput
+}
+
+input UserSearchInput {
+  id: EntityId
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  fullName: String
+  profileImage: ReferenceSearchInput
+}
+
+input UserSearchOrderInput {
+  id: OrderEnum
+  email: OrderEnum
+  password: OrderEnum
+  firstName: OrderEnum
+  lastName: OrderEnum
+  fullName: OrderEnum
+  profileImage: OrderEnum
 }

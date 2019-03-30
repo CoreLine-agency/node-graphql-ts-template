@@ -21,25 +21,28 @@ const PaginatedUserResponse = PaginatedResponse(User);
 
 @Resolver(User)
 export class UserCrudResolver {
-  @Query((returns) => User)
+  @Query(() => User)
   public async user(@Arg('id', () => EntityIdScalar) id: number, @Info() info, @Ctx() ctx: IRequestContext) {
     return addEagerFlags(await ctx.em.findOneOrFail(User, id, getFindOptions(User, info)));
   }
 
   @Query(() => PaginatedUserResponse)
   public async searchUsers(
-    @Arg('search') search: UserSearchInput,
+    @Arg('search', () => UserSearchInput, { nullable: true }) search: UserSearchInput | null = null,
     @Arg('skip', () => Int, { nullable: true }) skip: number = 0,
     @Arg('take', () => Int, { nullable: true }) take: number = 25,
     @Arg('order', () => [UserSearchOrderInput], { nullable: true }) order: Array<UserSearchOrderInput> = [],
     @Info() info,
     @Ctx() ctx: IRequestContext,
   ) {
+    const defaultFindOptions = getFindOptions(User, info, { transformQueryPath: x => x.replace(/^items./, '') });
+
     const [items, total] = addEagerFlags(await ctx.em.findAndCount(User, {
+      ...defaultFindOptions,
       skip,
       take,
       where: JSON.parse(JSON.stringify(search)),
-      order: JSON.parse(JSON.stringify(order[0] || {})),
+      order: JSON.parse(JSON.stringify(Object.assign({}, ...order))),
     }));
 
     return {
@@ -49,12 +52,12 @@ export class UserCrudResolver {
     };
   }
 
-  @Query((returns) => [User])
+  @Query(() => [User])
   public async users(@Info() info, @Ctx() ctx: IRequestContext) {
     return addEagerFlags(await ctx.em.find(User, getFindOptions(User, info)));
   }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   public async createUser(@Arg('input') input: UserCreateInput, @Ctx() ctx: IRequestContext): Promise<User> {
     const model = new User();
     await model.update(input, ctx);
@@ -64,7 +67,7 @@ export class UserCrudResolver {
     return model;
   }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   public async updateUser(@Arg('input') input: UserEditInput, @Ctx() ctx: IRequestContext) {
     const model = await ctx.em.findOneOrFail(User, input.id);
     await model.update(input, ctx);
@@ -77,7 +80,7 @@ export class UserCrudResolver {
     return model;
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   public async deleteUsers(@Arg('ids', () => [ID]) ids: Array<EntityId>, @Ctx() ctx: IRequestContext): Promise<boolean> {
     const entities = await ctx.em.findByIds(User, ids);
     await auth.assertCanDelete(entities, ctx);
