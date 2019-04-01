@@ -135,7 +135,7 @@ export function generateSingleModel(model: ISingleErModel, ctx: IGeneratorContex
   if (autoAssignRelations.length) {
     generatedAutoAssignRelations =
 `if (getInputOperationType(this, input) === 'create') {
-      ${autoAssignRelations.map(generateContextUpdateCall).join('\\n')}
+      ${autoAssignRelations.map(generateContextUpdateCall).join('\n')}
     }`;
   }
 
