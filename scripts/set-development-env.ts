@@ -32,6 +32,7 @@ const randomPort = () => Math.floor((Math.random() * 58000) + 1100);
       console.log('Setting up database for port', port);
       writeFileSync('template.env', templateEnv, { encoding: 'utf8' });
       writeFileSync('docker-compose.yml', dockerCompose, { encoding: 'utf8' });
+      rlp.close();
     }
     execSync('cp template.env .env');
     console.log('Default .env file created');
