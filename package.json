@@ -43,6 +43,7 @@
     "pluralize": "^7.0.0",
     "pretty-error": "^2.1.1",
     "raven": "^2.6.4",
+    "readline-promise": "^1.0.4",
     "reflect-metadata": "^0.1.10",
     "ts-node": "^6.0.1",
     "type-graphql": "^0.17.1",
