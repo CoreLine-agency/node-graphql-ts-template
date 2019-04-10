@@ -16,7 +16,7 @@
     "db:stop": "docker container stop coreline-template",
     "db:rm": "npm run db:stop && docker container rm coreline-template",
     "resource:delete": "ts-node scripts/delete-resource",
-    "psql": "psql postgresql://user:1234@localhost:5401/coreline-template"
+    "psql": "psql postgresql://user:1234@localhost:5402/coreline-template"
   },
   "keywords": [],
   "author": "",
