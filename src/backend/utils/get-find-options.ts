@@ -1,6 +1,7 @@
-import * as getFieldNames from 'graphql-list-fields';
 import { first, flatten, tail, uniq } from 'lodash';
 import { EntityMetadata, getRepository } from 'typeorm';
+
+const getFieldNames = require('graphql-list-fields');
 
 function expandPath(path: string) {
   const pathCopy = [...path.split('.')];

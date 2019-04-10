@@ -10,6 +10,7 @@ export function generateCrudResolver(model: ISingleErModel) {
   return (
     `// tslint:disable max-line-length
 import { Arg, Args, Mutation, Query, Info, ID, Ctx, Resolver, Root, FieldResolver, Int } from 'type-graphql';
+import * as cleanDeep from 'clean-deep';
 
 import { ${modelName} } from '../models/${modelName}';
 import { ${modelName}CreateInput } from '../inputs/${modelName}CreateInput';
@@ -22,7 +23,7 @@ import { IRequestContext } from '../IRequestContext';
 import { addEagerFlags } from '../../utils/add-eager-flags';
 import * as auth from '../../utils/auth/auth-checkers';
 import { PaginatedResponse } from '../PaginationResponse';
-
+import { resolveGetters } from '../../utils/resolve-getters';
 
 // <keep-imports>
 // </keep-imports>
@@ -47,13 +48,13 @@ export class ${modelName}CrudResolver {
   ) {
     const defaultFindOptions = getFindOptions(${modelName}, info, { transformQueryPath: x => x.replace(/^items./, '') });
 
-    const [items, total] = addEagerFlags(await ctx.em.findAndCount(${modelName}, {
+    const [items, total] = addEagerFlags(await ctx.em.findAndCount(${modelName}, cleanDeep({
       ...defaultFindOptions,
       skip,
       take,
-      where: JSON.parse(JSON.stringify(search)),
-      order: JSON.parse(JSON.stringify(Object.assign({}, ...order))),
-    }));
+      where: resolveGetters(search),
+      order: Object.assign({}, ...order),
+    })));
 
     return {
       items,

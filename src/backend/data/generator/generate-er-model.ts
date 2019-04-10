@@ -165,6 +165,7 @@ import { EntityId, EntityIdScalar } from '../EntityId';
 import { ${name}Auth } from '../auth/${name}Auth';
 import { getInputOperationType } from '../../utils/get-input-operation-type';
 import { asPromise } from '../../utils/as-promise';
+import { noChange } from '../../utils/no-change';
 ${generateRelationUpdateImports(model.name, model.relations.filter((r) => r.relationType === 'one'))}
 
 // <keep-imports>
@@ -201,6 +202,9 @@ ${generateOneToOneSecondaryDeclarations(oneToOneSecondaryRelations)}
 
   public async update(input: ${name}CreateInput | ${name}EditInput | ${name}NestedInput, context: IRequestContext) {
     ${generateDestructureStatement([...manyToOneRelations, ...oneToOneOwnerRelations, ...oneToOneSecondaryRelations].filter(notAutoAssign))}
+    if (noChange(input)) {
+      return this;
+    }
     if (getInputOperationType(this, input) === 'update') {
       await auth.assertCanUpdate(this, context);
     }
