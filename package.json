@@ -15,6 +15,7 @@
     "db:start": "docker-compose -f docker-compose.yml up -d",
     "db:stop": "docker container stop coreline-template",
     "db:rm": "npm run db:stop && docker container rm coreline-template",
+    "resource:delete": "ts-node scripts/delete-resource",
     "psql": "psql postgresql://user:1234@localhost:5401/coreline-template"
   },
   "keywords": [],
