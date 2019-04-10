@@ -33,9 +33,13 @@ const randomPort = () => Math.floor((Math.random() * 58000) + 1100);
         .replace(/technobabble-template/g, name)
         .replace(/5402/g, port);
 
+      let packageJson = readFileSync('package.json', 'utf8');
+      packageJson = packageJson.replace('5402/coreline-template', `${port}/${name}`);
+
       console.log('Setting up database for port', port);
       writeFileSync('template.env', templateEnv, { encoding: 'utf8' });
       writeFileSync('docker-compose.yml', dockerCompose, { encoding: 'utf8' });
+      writeFileSync('package.json', packageJson, { encoding: 'utf8' });
     }
     execSync('cp template.env .env');
     console.log('Default .env file created');
