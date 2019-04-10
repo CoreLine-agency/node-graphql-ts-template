@@ -12,6 +12,7 @@ const rlp = readline.createInterface({
 // tslint:disable-next-line
 const randomPort = () => Math.floor((Math.random() * 58000) + 1100);
 
+
 (async () => {
   try {
     readFileSync('.env', 'utf8');
@@ -19,22 +20,26 @@ const randomPort = () => Math.floor((Math.random() * 58000) + 1100);
     let templateEnv = readFileSync('template.env', 'utf8');
     let dockerCompose = readFileSync('docker-compose.yml', 'utf8');
     if (templateEnv.includes('technobabble-template')) {
-      const name = trim(await rlp.questionAsync('Docker database/machine/service name?'));
+      const name = trim(await rlp.questionAsync('Docker database/machine/service name? '));
       if (!name) {
         throw new Error('Name must not be empty');
       }
-      templateEnv = templateEnv.replace(/technobabble-template/g, name);
-
       const port = randomPort().toString(10);
-      dockerCompose = dockerCompose.replace(/5402/g, port);
-      templateEnv = templateEnv.replace(/5402/g, port);
+      templateEnv = templateEnv
+        .replace(/technobabble-template/g, name)
+        .replace(/5402/g, port);
+
+      dockerCompose = dockerCompose
+        .replace(/technobabble-template/g, name)
+        .replace(/5402/g, port);
 
       console.log('Setting up database for port', port);
       writeFileSync('template.env', templateEnv, { encoding: 'utf8' });
       writeFileSync('docker-compose.yml', dockerCompose, { encoding: 'utf8' });
-      rlp.close();
     }
     execSync('cp template.env .env');
     console.log('Default .env file created');
+  } finally {
+    rlp.close();
   }
 })();
