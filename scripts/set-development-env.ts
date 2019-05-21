@@ -12,7 +12,6 @@ const rlp = readline.createInterface({
 // tslint:disable-next-line
 const randomPort = () => Math.floor((Math.random() * 58000) + 1100);
 
-
 (async () => {
   try {
     readFileSync('.env', 'utf8');

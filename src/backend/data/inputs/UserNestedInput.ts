@@ -3,7 +3,6 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { UserRole } from '../enums/UserRole';
-import { FileNestedInput } from './FileNestedInput';
 
 // <keep-imports>
 // </keep-imports>
@@ -24,9 +23,6 @@ export class UserNestedInput {
 
   @Field(() => String, { nullable: true })
   public lastName?: string | null;
-
-  @Field(() => FileNestedInput, { nullable: true })
-  public profileImage?: FileNestedInput | null;
 
   // <keep-methods>
   // </keep-methods>

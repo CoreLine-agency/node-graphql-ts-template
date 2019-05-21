@@ -3,7 +3,6 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { UserRole } from '../enums/UserRole';
-import { ReferenceSearchInput } from './ReferenceSearchInput';
 
 // <keep-imports>
 // </keep-imports>
@@ -24,9 +23,6 @@ export class UserSearchInput {
 
   @Field(() => String, { nullable: true })
   public lastName?: string | null;
-
-  @Field(() => ReferenceSearchInput, { nullable: true })
-  public profileImage?: ReferenceSearchInput | null;
 
   // <keep-methods>
   // </keep-methods>

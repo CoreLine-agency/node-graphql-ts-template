@@ -21,16 +21,11 @@ export class FileAuth implements IAuthorizationChecker {
       return true;
     }
 
-    const owner = await this.file.getOwner();
-    if (!owner) {
-      return true;
-    }
-
-    return auth.user.id === owner.id;
+    return false;
   }
 
   public async canPersist(ctx: IRequestContext) {
-    return this.canManage(ctx);
+    return true;
   }
 
   public async canUpdate(ctx: IRequestContext) {

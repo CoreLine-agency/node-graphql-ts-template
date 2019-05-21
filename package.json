@@ -1,5 +1,5 @@
 {
-  "name": "@techobabble/graphql-ts-helper",
+  "name": "@coreline/graphql-ts-helper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,7 +16,7 @@
     "db:stop": "docker container stop coreline-template",
     "db:rm": "npm run db:stop && docker container rm coreline-template",
     "resource:delete": "ts-node scripts/delete-resource",
-    "psql": "psql postgresql://user:1234@localhost:5402/coreline-template"
+    "psql": "psql postgresql://user:1234@localhost:41888/testing-generator"
   },
   "keywords": [],
   "author": "",

@@ -9,8 +9,6 @@ scalar EntityId
 type File {
   id: EntityId!
   contentBase64: String!
-  post: Post
-  user: User
   createdAt: DateTime!
   updatedAt: DateTime!
   url: String!
@@ -19,36 +17,21 @@ type File {
 
 input FileCreateInput {
   contentBase64: String!
-  post: PostNestedInput
-  user: UserNestedInput
 }
 
 input FileEditInput {
   id: EntityId!
   contentBase64: String
-  post: PostNestedInput
-  user: UserNestedInput
-}
-
-input FileNestedInput {
-  id: EntityId
-  contentBase64: String
-  post: PostNestedInput
-  user: UserNestedInput
 }
 
 input FileSearchInput {
   id: EntityId
   contentBase64: String
-  post: ReferenceSearchInput
-  user: ReferenceSearchInput
 }
 
 input FileSearchOrderInput {
   id: OrderEnum
   contentBase64: OrderEnum
-  post: OrderEnum
-  user: OrderEnum
 }
 
 type LoginResponse {
@@ -60,17 +43,9 @@ type Mutation {
   emailRegister(input: UserCreateInput!): LoginResponse!
   emailLogin(password: String!, email: String!): LoginResponse!
   logout: Boolean!
-  facebookLogin(facebookAccessToken: String!): String!
-  googleLogin(googleAccessToken: String!): String!
   createFile(input: FileCreateInput!): File!
   updateFile(input: FileEditInput!): File!
   deleteFiles(ids: [ID!]!): Boolean!
-  createPost(input: PostCreateInput!): Post!
-  updatePost(input: PostEditInput!): Post!
-  deletePosts(ids: [ID!]!): Boolean!
-  forgotPassword(email: String!): Boolean!
-  resetPassword(newPassword: String!, forgotPasswordCode: String!): LoginResponse!
-  changePassword(newPassword: String!, oldPassword: String!): Boolean!
   createUser(input: UserCreateInput!): User!
   updateUser(input: UserEditInput!): User!
   deleteUsers(ids: [ID!]!): Boolean!
@@ -88,13 +63,6 @@ type PaginatedFileResponse {
   nextPage: Int!
 }
 
-type PaginatedPostResponse {
-  items: [Post!]!
-  total: Int!
-  hasMore: Boolean!
-  nextPage: Int!
-}
-
 type PaginatedUserResponse {
   items: [User!]!
   total: Int!
@@ -102,61 +70,13 @@ type PaginatedUserResponse {
   nextPage: Int!
 }
 
-type Post {
-  id: EntityId!
-  content: String!
-  title: String!
-  author: User!
-  images: [File!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-input PostCreateInput {
-  content: String!
-  title: String!
-}
-
-input PostEditInput {
-  id: EntityId!
-  content: String
-  title: String
-}
-
-input PostNestedInput {
-  id: EntityId
-  content: String
-  title: String
-}
-
-input PostSearchInput {
-  id: EntityId
-  content: String
-  title: String
-  author: ReferenceSearchInput
-}
-
-input PostSearchOrderInput {
-  id: OrderEnum
-  content: OrderEnum
-  title: OrderEnum
-  author: OrderEnum
-}
-
 type Query {
   file(id: EntityId!): File!
   searchFiles(order: [FileSearchOrderInput!], take: Int, skip: Int, search: FileSearchInput): PaginatedFileResponse!
   files: [File!]!
-  post(id: EntityId!): Post!
-  searchPosts(order: [PostSearchOrderInput!], take: Int, skip: Int, search: PostSearchInput): PaginatedPostResponse!
-  posts: [Post!]!
   user(id: EntityId!): User!
   searchUsers(order: [UserSearchOrderInput!], take: Int, skip: Int, search: UserSearchInput): PaginatedUserResponse!
   users: [User!]!
-}
-
-input ReferenceSearchInput {
-  id: EntityId
 }
 
 type User {
@@ -164,8 +84,6 @@ type User {
   email: String
   firstName: String!
   lastName: String!
-  posts: [Post!]!
-  profileImage: File
   createdAt: DateTime!
   updatedAt: DateTime!
   fullName: String!
@@ -176,7 +94,6 @@ input UserCreateInput {
   password: String!
   firstName: String!
   lastName: String!
-  profileImage: FileNestedInput
 }
 
 input UserEditInput {
@@ -185,16 +102,6 @@ input UserEditInput {
   password: String
   firstName: String
   lastName: String
-  profileImage: FileNestedInput
-}
-
-input UserNestedInput {
-  id: EntityId
-  email: String
-  password: String
-  firstName: String
-  lastName: String
-  profileImage: FileNestedInput
 }
 
 input UserSearchInput {
@@ -203,7 +110,6 @@ input UserSearchInput {
   password: String
   firstName: String
   lastName: String
-  profileImage: ReferenceSearchInput
 }
 
 input UserSearchOrderInput {
@@ -212,5 +118,4 @@ input UserSearchOrderInput {
   password: OrderEnum
   firstName: OrderEnum
   lastName: OrderEnum
-  profileImage: OrderEnum
 }

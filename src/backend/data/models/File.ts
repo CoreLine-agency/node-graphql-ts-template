@@ -3,20 +3,18 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-import { Post } from './Post';
-import { User } from './User';
-
 import { asPromise } from '../../utils/as-promise';
 import * as auth from '../../utils/auth/auth-checkers';
 import { IAuthorizable } from '../../utils/auth/IAuthorizable';
 import { getInputOperationType } from '../../utils/get-input-operation-type';
+import { noChange } from '../../utils/no-change';
 import { FileAuth } from '../auth/FileAuth';
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { FileCreateInput } from '../inputs/FileCreateInput';
 import { FileEditInput } from '../inputs/FileEditInput';
 import { FileNestedInput } from '../inputs/FileNestedInput';
 import { IRequestContext } from '../IRequestContext';
-import { updatePostRelation, updateUserRelation } from './update-operations/file-update-operations';
+import {  } from './update-operations/file-update-operations';
 
 // <keep-imports>
 import * as crypto from 'crypto';
@@ -47,15 +45,6 @@ export class File implements IAuthorizable {
   })
   public slug: string;
 
-  @ManyToOne(() => Post, (post) => post.images , { nullable: true, onDelete: 'SET NULL' })
-  @Field(() => Post , { nullable: true })
-  public post: Promise<Post | undefined | null>;
-
-  @OneToOne(() => User, (user) => user.profileImage , { nullable: true, onDelete: 'SET NULL' })
-  @Field(() => User , { nullable: true })
-  @JoinColumn()
-  public user: Promise<User | undefined | null>;
-
   @CreateDateColumn()
   @Field()
   public createdAt: Date;
@@ -65,15 +54,14 @@ export class File implements IAuthorizable {
   public updatedAt: Date;
 
   public async update(input: FileCreateInput | FileEditInput | FileNestedInput, context: IRequestContext) {
-    const { post, user, ...data } = input;
+    const data = input;
+    if (noChange(input)) {
+      return this;
+    }
     if (getInputOperationType(this, input) === 'update') {
       await auth.assertCanUpdate(this, context);
     }
     Object.assign(this, data);
-
-    await updatePostRelation(this, post, context);
-
-    await updateUserRelation(this, user, context);
 
     context.modelsToSave.push(this);
 
@@ -88,15 +76,5 @@ export class File implements IAuthorizable {
   }
 
   // <keep-methods>
-  public async getOwner() {
-    const owner = await this.user;
-    if (owner) {
-      return owner;
-    }
-
-    const post = await this.post;
-
-    return post && post.author;
-  }
   // </keep-methods>
 }

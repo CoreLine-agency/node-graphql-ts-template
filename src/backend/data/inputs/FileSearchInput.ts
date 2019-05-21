@@ -3,8 +3,6 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 
-import { ReferenceSearchInput } from './ReferenceSearchInput';
-
 // <keep-imports>
 // </keep-imports>
 
@@ -15,12 +13,6 @@ export class FileSearchInput {
 
   @Field(() => String, { nullable: true })
   public contentBase64?: string | null;
-
-  @Field(() => ReferenceSearchInput, { nullable: true })
-  public post?: ReferenceSearchInput | null;
-
-  @Field(() => ReferenceSearchInput, { nullable: true })
-  public user?: ReferenceSearchInput | null;
 
   // <keep-methods>
   // </keep-methods>

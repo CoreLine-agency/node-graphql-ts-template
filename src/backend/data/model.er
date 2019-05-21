@@ -14,30 +14,21 @@ User:
   - firstName
   - lastName
   + role: ADMIN|USER
-  + accountVerificationCode?: string varchar
-  + forgotPasswordCode?: string varchar
-  + googleUserId?: string varchar
-  + googleToken?: string varchar
-  + facebookUserId?: string varchar
-  + facebookAccessToken?: string varchar
 
 File:
   - contentBase64: string text
   + slug
 
-Post:
-  - content
-  - title
-
 # Relation between tables are defined by pairs of sentences containing table name combined `has many` or `has one`.
 # This allows us to create 1-to-1 and 1-to-N relations
 # Optional relation can be defined by adding ? to the relation name
 
-User has many Post as posts
-Post has one User as author = context.user
+# Relations examples:
+#User has many Post as posts
+#Post has one User as author = context.user
 
-User has one File as profileImage?
-File has one User as user?
+#User has one File as profileImage?
+#File has one User as user?
 
-Post has many File as images
-File has one Post as post?
+#Post has many File as images
+#File has one Post as post?

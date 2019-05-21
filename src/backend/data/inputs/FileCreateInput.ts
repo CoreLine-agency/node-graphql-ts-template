@@ -3,9 +3,6 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../EntityId';
 
-import { PostNestedInput } from './PostNestedInput';
-import { UserNestedInput } from './UserNestedInput';
-
 // <keep-imports>
 // </keep-imports>
 
@@ -13,12 +10,6 @@ import { UserNestedInput } from './UserNestedInput';
 export class FileCreateInput {
   @Field(() => String)
   public contentBase64: string;
-
-  @Field(() => PostNestedInput, { nullable: true })
-  public post?: PostNestedInput | null;
-
-  @Field(() => UserNestedInput, { nullable: true })
-  public user?: UserNestedInput | null;
 
   // <keep-methods>
   // </keep-methods>

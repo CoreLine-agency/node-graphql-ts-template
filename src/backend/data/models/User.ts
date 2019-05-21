@@ -7,6 +7,7 @@ import { asPromise } from '../../utils/as-promise';
 import * as auth from '../../utils/auth/auth-checkers';
 import { IAuthorizable } from '../../utils/auth/IAuthorizable';
 import { getInputOperationType } from '../../utils/get-input-operation-type';
+import { noChange } from '../../utils/no-change';
 import { UserAuth } from '../auth/UserAuth';
 import { EntityId, EntityIdScalar } from '../EntityId';
 import { UserRole } from '../enums/UserRole';
@@ -14,9 +15,7 @@ import { UserCreateInput } from '../inputs/UserCreateInput';
 import { UserEditInput } from '../inputs/UserEditInput';
 import { UserNestedInput } from '../inputs/UserNestedInput';
 import { IRequestContext } from '../IRequestContext';
-import { File } from './File';
-import { Post } from './Post';
-import { updateProfileImageRelation } from './update-operations/user-update-operations';
+import {  } from './update-operations/user-update-operations';
 
 // <keep-imports>
 import { hashPassword, verifyPassword } from '../../utils/crypto';
@@ -66,50 +65,6 @@ export class User implements IAuthorizable {
   })
   public role: UserRole;
 
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public accountVerificationCode?: string | null;
-
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public forgotPasswordCode?: string | null;
-
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public googleUserId?: string | null;
-
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public googleToken?: string | null;
-
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public facebookUserId?: string | null;
-
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public facebookAccessToken?: string | null;
-
-  @OneToMany(() => Post, (post) => post.author)
-  @Field(() => [Post])
-  public posts: Promise<Array<Post>>;
-
-  @OneToOne(() => File, (file) => file.user)
-  @Field(() => File , { nullable: true })
-  public profileImage: Promise<File | undefined | null>;
-
   @CreateDateColumn()
   @Field()
   public createdAt: Date;
@@ -119,13 +74,14 @@ export class User implements IAuthorizable {
   public updatedAt: Date;
 
   public async update(input: UserCreateInput | UserEditInput | UserNestedInput, context: IRequestContext) {
-    const { profileImage, ...data } = input;
+    const data = input;
+    if (noChange(input)) {
+      return this;
+    }
     if (getInputOperationType(this, input) === 'update') {
       await auth.assertCanUpdate(this, context);
     }
     Object.assign(this, data);
-
-    await updateProfileImageRelation(this, profileImage, context);
 
     context.modelsToSave.push(this);
 
