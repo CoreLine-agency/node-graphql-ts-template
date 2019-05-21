@@ -19,18 +19,18 @@ const randomPort = () => Math.floor((Math.random() * 58000) + 1100);
   } catch (e) {
     let templateEnv = readFileSync('template.env', 'utf8');
     let dockerCompose = readFileSync('docker-compose.yml', 'utf8');
-    if (templateEnv.includes('technobabble-template')) {
+    if (templateEnv.includes('coreline-template')) {
       const name = trim(await rlp.questionAsync('Docker database/machine/service name? '));
       if (!name) {
         throw new Error('Name must not be empty');
       }
       const port = randomPort().toString(10);
       templateEnv = templateEnv
-        .replace(/technobabble-template/g, name)
+        .replace(/coreline-template/g, name)
         .replace(/5402/g, port);
 
       dockerCompose = dockerCompose
-        .replace(/technobabble-template/g, name)
+        .replace(/coreline-template/g, name)
         .replace(/5402/g, port);
 
       let packageJson = readFileSync('package.json', 'utf8');

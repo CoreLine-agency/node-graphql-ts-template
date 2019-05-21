@@ -1,7 +1,7 @@
 version: '3'
 services:
- technobabble-template:
-   container_name: technobabble-template
+ coreline-template:
+   container_name: coreline-template
    image: postgres:10-alpine
    restart: always
    ports:
@@ -9,4 +9,4 @@ services:
    environment:
      POSTGRES_USER: user
      POSTGRES_PASSWORD: 1234
-     POSTGRES_DB: technobabble-template
+     POSTGRES_DB: coreline-template

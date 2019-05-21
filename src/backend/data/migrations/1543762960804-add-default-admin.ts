@@ -6,7 +6,7 @@ import { UserRole } from '../enums/UserRole';
 export class addDefaultAdmin1543762960804 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
     const passwordHash = await hashPassword('password');
-    const email = 'admin@technobabble.hr';
+    const email = 'admin@coreline.hr';
     const role: UserRole = UserRole.ADMIN;
     const firstName = 'Super';
     const lastName = 'Admin';
