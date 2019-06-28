@@ -10,8 +10,6 @@ function getImportPath(type: string) {
   return `./${type}`;
 }
 export function generateNestedInputsImports(fields: Array<IFieldDefinition>, inputClassName: string) {
-  console.log('fields', fields);
-
   return fields
     .filter(field => field.type !== inputClassName)
     .map((field) => `import { ${field.type} } from '${getImportPath(field.type)}'`);
