@@ -153,7 +153,7 @@ export function generateSingleModel(model: ISingleErModel, ctx: IGeneratorContex
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, JoinColumn, Entity, OneToOne, ManyToOne, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-${generateTypesImports(types)}
+${generateTypesImports(types.filter(type => type !== model.name))}
 ${generateEnumsImports(model.fields)}
 import * as auth from '../../utils/auth/auth-checkers';
 import { ${name}CreateInput } from '../inputs/${name}CreateInput';

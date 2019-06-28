@@ -9,8 +9,11 @@ function getImportPath(type: string) {
 
   return `./${type}`;
 }
-export function generateNestedInputsImports(fields: Array<IFieldDefinition>) {
+export function generateNestedInputsImports(fields: Array<IFieldDefinition>, inputClassName: string) {
+  console.log('fields', fields);
+
   return fields
+    .filter(field => field.type !== inputClassName)
     .map((field) => `import { ${field.type} } from '${getImportPath(field.type)}'`);
 }
 
@@ -94,6 +97,8 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
 
   const allInputFields = [...idFields, ...inputFields, ...manyToOneFields, ...oneToOneFields];
 
+  const className = `${name}${upperFirst(type)}Input`;
+
   return (
 `import { Field, ID, InputType } from 'type-graphql';
 
@@ -101,15 +106,15 @@ import { EntityId, EntityIdScalar } from '../EntityId';
 ${generateEnumsImports(model.fields)}
 ${uniq([
   type === 'searchOrder' ? "import { SortOrderEnum } from '../SortOrderEnum'" : '',
-  ...generateNestedInputsImports(manyToOneFields),
-  ...generateNestedInputsImports(oneToOneFields),
+  ...generateNestedInputsImports(manyToOneFields, className),
+  ...generateNestedInputsImports(oneToOneFields, className),
 ]).filter(x => x).join('\n')}
 
 // <keep-imports>
 // </keep-imports>
 
 @InputType()
-export class ${name}${upperFirst(type)}Input {
+export class ${className} {
 ${allInputFields.map(generateField).join('\n\n')}
 
   // <keep-methods>

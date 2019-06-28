@@ -1,5 +1,5 @@
 // tslint:disable max-line-length
-import { lowerFirst, upperFirst } from 'lodash';
+import { lowerFirst, uniq, upperFirst } from 'lodash';
 import { ISingleErModel, ISingleErRelation } from './model-types';
 
 function getFieldName(relation: ISingleErRelation) {
@@ -47,8 +47,8 @@ export function generateUpdateOperations(model: ISingleErModel) {
 import { asPromise } from '../../../utils/as-promise';
 import { IRequestContext } from '../../IRequestContext';
 import { ${model.name} } from '../${model.name}';
-${toOneRelations.map((r) => generateNestedInputImport(r.otherTypeName)).join('\n')}
-${toOneRelations.map((r) => generateModelImport(r.otherTypeName)).join('\n')}
+${uniq(toOneRelations.map((r) => generateNestedInputImport(r.otherTypeName))).join('\n')}
+${uniq(toOneRelations.filter(r => r.otherTypeName !== model.name).map((r) => generateModelImport(r.otherTypeName))).join('\n')}
 
 ${toOneRelations.map((r) => generateToOneInitialization(r, model.name)).join('\n')}
 `);
