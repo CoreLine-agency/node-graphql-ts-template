@@ -1,3 +1,41 @@
+type Agent {
+  id: EntityId!
+  firstName: String!
+  lastName: String!
+  talents: [Talent!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input AgentCreateInput {
+  firstName: String!
+  lastName: String!
+}
+
+input AgentEditInput {
+  id: EntityId!
+  firstName: String
+  lastName: String
+}
+
+input AgentNestedInput {
+  id: EntityId
+  firstName: String
+  lastName: String
+}
+
+input AgentSearchInput {
+  id: EntityId
+  firstName: String
+  lastName: String
+}
+
+input AgentSearchOrderInput {
+  id: OrderEnum
+  firstName: OrderEnum
+  lastName: OrderEnum
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -40,12 +78,18 @@ type LoginResponse {
 }
 
 type Mutation {
+  createAgent(input: AgentCreateInput!): Agent!
+  updateAgent(input: AgentEditInput!): Agent!
+  deleteAgents(ids: [ID!]!): Boolean!
   emailRegister(input: UserCreateInput!): LoginResponse!
   emailLogin(password: String!, email: String!): LoginResponse!
   logout: Boolean!
   createFile(input: FileCreateInput!): File!
   updateFile(input: FileEditInput!): File!
   deleteFiles(ids: [ID!]!): Boolean!
+  createTalent(input: TalentCreateInput!): Talent!
+  updateTalent(input: TalentEditInput!): Talent!
+  deleteTalents(ids: [ID!]!): Boolean!
   createUser(input: UserCreateInput!): User!
   updateUser(input: UserEditInput!): User!
   deleteUsers(ids: [ID!]!): Boolean!
@@ -56,8 +100,22 @@ enum OrderEnum {
   ASC
 }
 
+type PaginatedAgentResponse {
+  items: [Agent!]!
+  total: Int!
+  hasMore: Boolean!
+  nextPage: Int!
+}
+
 type PaginatedFileResponse {
   items: [File!]!
+  total: Int!
+  hasMore: Boolean!
+  nextPage: Int!
+}
+
+type PaginatedTalentResponse {
+  items: [Talent!]!
   total: Int!
   hasMore: Boolean!
   nextPage: Int!
@@ -71,12 +129,58 @@ type PaginatedUserResponse {
 }
 
 type Query {
+  agent(id: EntityId!): Agent!
+  searchAgents(order: [AgentSearchOrderInput!], take: Int, skip: Int, search: AgentSearchInput): PaginatedAgentResponse!
+  agents: [Agent!]!
   file(id: EntityId!): File!
   searchFiles(order: [FileSearchOrderInput!], take: Int, skip: Int, search: FileSearchInput): PaginatedFileResponse!
   files: [File!]!
+  talent(id: EntityId!): Talent!
+  searchTalents(order: [TalentSearchOrderInput!], take: Int, skip: Int, search: TalentSearchInput): PaginatedTalentResponse!
+  talents: [Talent!]!
   user(id: EntityId!): User!
   searchUsers(order: [UserSearchOrderInput!], take: Int, skip: Int, search: UserSearchInput): PaginatedUserResponse!
   users: [User!]!
+}
+
+input ReferenceSearchInput {
+  id: EntityId
+}
+
+type Talent {
+  id: EntityId!
+  firstName: String!
+  lastName: String!
+  agent: Agent
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input TalentCreateInput {
+  firstName: String!
+  lastName: String!
+  agent: AgentNestedInput
+}
+
+input TalentEditInput {
+  id: EntityId!
+  firstName: String
+  lastName: String
+  agent: AgentNestedInput
+}
+
+input TalentSearchInput {
+  id: EntityId
+  firstName: String
+  lastName: String
+  agent: ReferenceSearchInput
+}
+
+input TalentSearchOrderInput {
+  id: OrderEnum
+  firstName: OrderEnum
+  lastName: OrderEnum
+  agent: OrderEnum
 }
 
 type User {
