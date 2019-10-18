@@ -3,7 +3,7 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../../EntityId';
 
-import { AgentNestedInput } from '../../inputs/AgentNestedInput';
+import { AgentNestedInput } from '../../Agent/inputs/AgentNestedInput';
 
 // <keep-imports>
 // </keep-imports>

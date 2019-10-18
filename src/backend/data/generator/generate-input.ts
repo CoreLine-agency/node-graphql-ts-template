@@ -1,18 +1,23 @@
 import { uniq, upperFirst } from 'lodash';
+import _ = require('lodash');
 import { generateEnumsImports, generateFieldDeco, getFieldName, getTsTypeName } from './generate-base';
 import { IFieldDefinition, ISingleErModel, ISingleErRelation } from './model-types';
 
-function getImportPath(type: string) {
+function getImportPath(type: string, name: string) {
   if (type === 'SortOrderEnum') {
     return `../../SortOrderEnum`;
   }
 
-  return `../../inputs/${type}`;
+  if (type === 'ReferenceSearchInput') {
+    return `../../inputs/ReferenceSearchInput`;
+  }
+
+  return `../../${_.capitalize(name)}/inputs/${type}`;
 }
 export function generateNestedInputsImports(fields: Array<IFieldDefinition>, inputClassName: string) {
   return fields
     .filter(field => field.type !== inputClassName)
-    .map((field) => `import { ${field.type} } from '${getImportPath(field.type)}'`);
+    .map((field) => `import { ${field.type} } from '${getImportPath(field.type, field.name)}'`);
 }
 
 export function generateField(field: IFieldDefinition) {
