@@ -1,10 +1,10 @@
 import { IRequestContext } from 'backend/data/IRequestContext';
-import { UserRole } from 'backend/data/Talent/enums/UserRole';
+import { UserRole } from 'backend/data/Post/enums/UserRole';
 import { IAuthorizationChecker } from 'backend/utils/auth/IAuthorizationChecker';
-import { Talent } from '../models/Talent';
+import { Post } from '../models/Post';
 
-export class TalentAuth implements IAuthorizationChecker {
-  public constructor(private talent: Talent) {
+export class PostAuth implements IAuthorizationChecker {
+  public constructor(private post: Post) {
   }
 
   public async canRead(ctx: IRequestContext, field?: string) {

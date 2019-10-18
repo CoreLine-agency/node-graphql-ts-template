@@ -23,6 +23,9 @@ Talent:
   - firstName
   - lastName
 
+Post:
+  - content
+
 Agent has many Talent as talents
 Talent has one Agent as agent?
 
