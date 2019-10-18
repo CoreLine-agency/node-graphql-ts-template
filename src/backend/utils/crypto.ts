@@ -2,7 +2,7 @@ import { compare, hash } from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import { sign } from 'jsonwebtoken';
 
-import { User } from '../data/models/User';
+import { User } from '../data/User/models/User';
 import config from '../server/config';
 
 export async function hashPassword(password: string): Promise<string> {

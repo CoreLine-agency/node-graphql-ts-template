@@ -23,12 +23,6 @@ Talent:
   - firstName
   - lastName
 
-Manager
-  - firstName
-  - lastName
-
-Talent has one Manager as manager?
-Manager has many Talent as talents
 Agent has many Talent as talents
 Talent has one Agent as agent?
 

@@ -4,10 +4,10 @@ import { IFieldDefinition, ISingleErModel, ISingleErRelation } from './model-typ
 
 function getImportPath(type: string) {
   if (type === 'SortOrderEnum') {
-    return `../SortOrderEnum`;
+    return `../../SortOrderEnum`;
   }
 
-  return `./${type}`;
+  return `../../inputs/${type}`;
 }
 export function generateNestedInputsImports(fields: Array<IFieldDefinition>, inputClassName: string) {
   return fields
@@ -100,10 +100,10 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
   return (
 `import { Field, ID, InputType } from 'type-graphql';
 
-import { EntityId, EntityIdScalar } from '../EntityId';
+import { EntityId, EntityIdScalar } from '../../EntityId';
 ${generateEnumsImports(model.fields)}
 ${uniq([
-  type === 'searchOrder' ? "import { SortOrderEnum } from '../SortOrderEnum'" : '',
+  type === 'searchOrder' ? "import { SortOrderEnum } from '../../SortOrderEnum'" : '',
   ...generateNestedInputsImports(manyToOneFields, className),
   ...generateNestedInputsImports(oneToOneFields, className),
 ]).filter(x => x).join('\n')}

@@ -7,7 +7,7 @@ import { IGeneratorContext } from './generator-context';
 import { getEnumName, isEnum, ISingleErModel, ISingleErRelation } from './model-types';
 
 export function generateTypeImport(type: string) {
-  return `import { ${type} } from './${type}';`;
+  return `import { ${type} } from '../../${type}/models/${type}';`;
 }
 
 export function generateOneToOneOwnerDeclarations(relations: Array<ISingleErRelation>) {
@@ -155,17 +155,17 @@ import { Column, JoinColumn, Entity, OneToOne, ManyToOne, OneToMany, PrimaryGene
 
 ${generateTypesImports(types.filter(type => type !== model.name))}
 ${generateEnumsImports(model.fields)}
-import * as auth from '../../utils/auth/auth-checkers';
+import * as auth from '../../../utils/auth/auth-checkers';
 import { ${name}CreateInput } from '../inputs/${name}CreateInput';
 import { ${name}EditInput } from '../inputs/${name}EditInput';
 import { ${name}NestedInput } from '../inputs/${name}NestedInput';
-import { IRequestContext } from '../IRequestContext';
-import { IAuthorizable } from '../../utils/auth/IAuthorizable';
-import { EntityId, EntityIdScalar } from '../EntityId';
+import { IRequestContext } from '../../IRequestContext';
+import { IAuthorizable } from '../../../utils/auth/IAuthorizable';
+import { EntityId, EntityIdScalar } from '../../EntityId';
 import { ${name}Auth } from '../auth/${name}Auth';
-import { getInputOperationType } from '../../utils/get-input-operation-type';
-import { asPromise } from '../../utils/as-promise';
-import { noChange } from '../../utils/no-change';
+import { getInputOperationType } from '../../../utils/get-input-operation-type';
+import { asPromise } from '../../../utils/as-promise';
+import { noChange } from '../../../utils/no-change';
 ${generateRelationUpdateImports(model.name, model.relations.filter((r) => r.relationType === 'one'))}
 
 // <keep-imports>

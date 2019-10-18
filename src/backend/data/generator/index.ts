@@ -4,6 +4,7 @@ import { lowerFirst } from 'lodash';
 import * as makeDir from 'make-dir';
 import * as path from 'path';
 
+import _ = require('lodash');
 import { findBetween, replaceBetween } from '../../utils/find-between';
 import { generateAuthChecker } from './generate-auth-checker';
 import { generateCrudResolver } from './generate-crud-resolver';
@@ -108,22 +109,29 @@ function fileToGeneratorContext(dir: string, name: string): IGeneratorContext {
     const authChecker = generateAuthChecker(model);
     const updateOperations = generateUpdateOperations(model);
 
-    await writeToFile(createInput, 'inputs', `${name}CreateInput.ts`, true);
-    await writeToFile(editInput, 'inputs', `${name}EditInput.ts`, true);
-    await writeToFile(nestedInput, 'inputs', `${name}NestedInput.ts`, true);
-    await writeToFile(searchInput, 'inputs', `${name}SearchInput.ts`, true);
-    await writeToFile(searchOrder, 'inputs', `${name}SearchOrderInput.ts`, true);
+    const namePath = _.kebabCase(name);
 
-    await writeToFile(dbModel, 'models', `${name}.ts`, true);
-    await writeToFile(resolver, 'field-resolvers', `${name}Resolver.ts`, false);
-    await writeToFile(crudResolver, 'resolvers', `${name}CrudResolver.ts`, true);
+    await writeToFile(createInput, `${namePath}/inputs`, `${name}CreateInput.ts`, true);
+    await writeToFile(editInput, `${namePath}/inputs`, `${name}EditInput.ts`, true);
+    await writeToFile(nestedInput, `${namePath}/inputs`, `${name}NestedInput.ts`, true);
+    await writeToFile(searchInput, `${namePath}/inputs`, `${name}SearchInput.ts`, true);
+    await writeToFile(searchOrder, `${namePath}/inputs`, `${name}SearchOrderInput.ts`, true);
+
+    await writeToFile(dbModel, `${namePath}/models`, `${name}.ts`, true);
+    await writeToFile(resolver, `${namePath}/field-resolvers`, `${name}Resolver.ts`, false);
+    await writeToFile(crudResolver, `${namePath}/resolvers`, `${name}CrudResolver.ts`, true);
 
     await bluebird.each(model.fields.filter(isEnum), async (field) => {
       const enumName = getEnumName(field);
-      await writeToFile(generateEnum(model, field), 'enums', `${enumName}.ts`, true);
+      await writeToFile(generateEnum(model, field), `${namePath}/enums`, `${enumName}.ts`, true);
     });
 
-    await writeToFile(authChecker, 'auth', `${name}Auth.ts`, false);
-    await writeToFile(updateOperations, `models/update-operations`, `${lowerFirst(name)}-update-operations.ts`, true);
+    await writeToFile(authChecker, `${namePath}/auth`, `${name}Auth.ts`, false);
+    await writeToFile(
+      updateOperations,
+      `${namePath}/models/update-operations`,
+      `${lowerFirst(name)}-update-operations.ts`,
+      true,
+    );
   }
 })();
