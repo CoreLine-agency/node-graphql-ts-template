@@ -109,7 +109,8 @@ function fileToGeneratorContext(dir: string, name: string): IGeneratorContext {
     const authChecker = generateAuthChecker(model);
     const updateOperations = generateUpdateOperations(model);
 
-    const namePath = _.kebabCase(name);
+    // const namePath = _.kebabCase(name);
+    const namePath = name;
 
     await writeToFile(createInput, `${namePath}/inputs`, `${name}CreateInput.ts`, true);
     await writeToFile(editInput, `${namePath}/inputs`, `${name}EditInput.ts`, true);

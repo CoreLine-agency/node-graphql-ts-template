@@ -33,7 +33,7 @@ export function generateToOneInitialization(relation: ISingleErRelation, modelNa
 }
 
 function generateNestedInputImport(name: string) {
-  return `import { ${name}NestedInput } from '../../../inputs/${name}NestedInput';`;
+  return `import { ${name}NestedInput } from '../../../${name}/inputs/${name}NestedInput';`;
 }
 
 function generateModelImport(name: string) {

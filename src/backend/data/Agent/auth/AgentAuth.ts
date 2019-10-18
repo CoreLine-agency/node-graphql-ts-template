@@ -1,6 +1,6 @@
-import { UserRole } from 'backend/data/Agent/enums/UserRole';
-import { IRequestContext } from 'backend/data/IRequestContext';
-import { IAuthorizationChecker } from 'backend/utils/auth/IAuthorizationChecker';
+import { IAuthorizationChecker } from '../../../utils/auth/IAuthorizationChecker';
+import { IRequestContext } from '../../IRequestContext';
+import { UserRole } from '../../User/enums/UserRole';
 import { Agent } from '../models/Agent';
 
 export class AgentAuth implements IAuthorizationChecker {

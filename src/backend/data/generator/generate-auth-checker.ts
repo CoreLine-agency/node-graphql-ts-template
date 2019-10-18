@@ -5,10 +5,14 @@ import { ISingleErModel } from './model-types';
 export function generateAuthChecker(model: ISingleErModel) {
   const { name } = model;
 
+  const rolePath = name === 'User' ?
+  '../enums/UserRole' :
+  `../../User/enums/UserRole`;
+
   return (
-`import { IAuthorizationChecker } from 'backend/utils/auth/IAuthorizationChecker';
-import { IRequestContext } from 'backend/data/IRequestContext';
-import { UserRole } from 'backend/data/${name}/enums/UserRole';
+`import { IAuthorizationChecker } from '../../../utils/auth/IAuthorizationChecker';
+import { IRequestContext } from '../../IRequestContext';
+import { UserRole } from '${rolePath}';
 import { ${name} } from '../models/${name}';
 
 export class ${name}Auth implements IAuthorizationChecker {

@@ -3,8 +3,8 @@
 import { asPromise } from '../../../../utils/as-promise';
 import { IRequestContext } from '../../../IRequestContext';
 import { Talent } from '../../../Talent/models/Talent'; ''
+import { AgentNestedInput } from '../../../Agent/inputs/AgentNestedInput';
 import { Agent } from '../../../Agent/models/Agent';
-import { AgentNestedInput } from '../../../inputs/AgentNestedInput';
 
 export async function updateAgentRelation(talent: Talent, agent: AgentNestedInput | null | undefined, context: IRequestContext) {
   const existingAgent = await talent.agent;

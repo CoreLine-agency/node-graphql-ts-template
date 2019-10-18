@@ -1,6 +1,6 @@
-import { IRequestContext } from 'backend/data/IRequestContext';
-import { UserRole } from 'backend/data/Post/enums/UserRole';
-import { IAuthorizationChecker } from 'backend/utils/auth/IAuthorizationChecker';
+import { IAuthorizationChecker } from '../../../utils/auth/IAuthorizationChecker';
+import { IRequestContext } from '../../IRequestContext';
+import { UserRole } from '../../User/enums/UserRole';
 import { Post } from '../models/Post';
 
 export class PostAuth implements IAuthorizationChecker {

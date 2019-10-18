@@ -1,5 +1,5 @@
-import { IRequestContext } from 'backend/data/IRequestContext';
-import { IAuthorizationChecker } from 'backend/utils/auth/IAuthorizationChecker';
+import { IAuthorizationChecker } from '../../../utils/auth/IAuthorizationChecker';
+import { IRequestContext } from '../../IRequestContext';
 import { UserRole } from '../enums/UserRole';
 import { User } from '../models/User';
 
