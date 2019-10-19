@@ -44,49 +44,13 @@ scalar DateTime
 """ID scalar type"""
 scalar EntityId
 
-type File {
-  id: EntityId!
-  contentBase64: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  url: String!
-  thumbUrl: String!
-}
-
-input FileCreateInput {
-  contentBase64: String!
-}
-
-input FileEditInput {
-  id: EntityId!
-  contentBase64: String
-}
-
-input FileSearchInput {
-  id: EntityId
-  contentBase64: String
-}
-
-input FileSearchOrderInput {
-  id: OrderEnum
-  contentBase64: OrderEnum
-}
-
-type LoginResponse {
-  token: String!
-  user: User!
-}
-
 type Mutation {
   createAgent(input: AgentCreateInput!): Agent!
   updateAgent(input: AgentEditInput!): Agent!
   deleteAgents(ids: [ID!]!): Boolean!
-  emailRegister(input: UserCreateInput!): LoginResponse!
-  emailLogin(password: String!, email: String!): LoginResponse!
-  logout: Boolean!
-  createFile(input: FileCreateInput!): File!
-  updateFile(input: FileEditInput!): File!
-  deleteFiles(ids: [ID!]!): Boolean!
+  createPost(input: PostCreateInput!): Post!
+  updatePost(input: PostEditInput!): Post!
+  deletePosts(ids: [ID!]!): Boolean!
   createTalent(input: TalentCreateInput!): Talent!
   updateTalent(input: TalentEditInput!): Talent!
   deleteTalents(ids: [ID!]!): Boolean!
@@ -107,8 +71,8 @@ type PaginatedAgentResponse {
   nextPage: Int!
 }
 
-type PaginatedFileResponse {
-  items: [File!]!
+type PaginatedPostResponse {
+  items: [Post!]!
   total: Int!
   hasMore: Boolean!
   nextPage: Int!
@@ -128,13 +92,39 @@ type PaginatedUserResponse {
   nextPage: Int!
 }
 
+type Post {
+  id: EntityId!
+  content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input PostCreateInput {
+  content: String!
+}
+
+input PostEditInput {
+  id: EntityId!
+  content: String
+}
+
+input PostSearchInput {
+  id: EntityId
+  content: String
+}
+
+input PostSearchOrderInput {
+  id: OrderEnum
+  content: OrderEnum
+}
+
 type Query {
   agent(id: EntityId!): Agent!
   searchAgents(order: [AgentSearchOrderInput!], take: Int, skip: Int, search: AgentSearchInput): PaginatedAgentResponse!
   agents: [Agent!]!
-  file(id: EntityId!): File!
-  searchFiles(order: [FileSearchOrderInput!], take: Int, skip: Int, search: FileSearchInput): PaginatedFileResponse!
-  files: [File!]!
+  post(id: EntityId!): Post!
+  searchPosts(order: [PostSearchOrderInput!], take: Int, skip: Int, search: PostSearchInput): PaginatedPostResponse!
+  posts: [Post!]!
   talent(id: EntityId!): Talent!
   searchTalents(order: [TalentSearchOrderInput!], take: Int, skip: Int, search: TalentSearchInput): PaginatedTalentResponse!
   talents: [Talent!]!
@@ -190,7 +180,6 @@ type User {
   lastName: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  fullName: String!
 }
 
 input UserCreateInput {

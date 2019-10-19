@@ -135,7 +135,7 @@
               "deprecationReason": null
             },
             {
-              "name": "file",
+              "name": "post",
               "description": null,
               "args": [
                 {
@@ -158,7 +158,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "File",
+                  "name": "Post",
                   "ofType": null
                 }
               },
@@ -166,7 +166,7 @@
               "deprecationReason": null
             },
             {
-              "name": "searchFiles",
+              "name": "searchPosts",
               "description": null,
               "args": [
                 {
@@ -180,7 +180,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "FileSearchOrderInput",
+                        "name": "PostSearchOrderInput",
                         "ofType": null
                       }
                     }
@@ -212,7 +212,7 @@
                   "description": null,
                   "type": {
                     "kind": "INPUT_OBJECT",
-                    "name": "FileSearchInput",
+                    "name": "PostSearchInput",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -223,7 +223,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "PaginatedFileResponse",
+                  "name": "PaginatedPostResponse",
                   "ofType": null
                 }
               },
@@ -231,7 +231,7 @@
               "deprecationReason": null
             },
             {
-              "name": "files",
+              "name": "posts",
               "description": null,
               "args": [],
               "type": {
@@ -245,7 +245,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "File",
+                      "name": "Post",
                       "ofType": null
                     }
                   }
@@ -958,7 +958,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "File",
+          "name": "Post",
           "description": null,
           "fields": [
             {
@@ -978,7 +978,7 @@
               "deprecationReason": null
             },
             {
-              "name": "contentBase64",
+              "name": "content",
               "description": null,
               "args": [],
               "type": {
@@ -1024,38 +1024,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "url",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "thumbUrl",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -1065,7 +1033,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "FileSearchOrderInput",
+          "name": "PostSearchOrderInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -1080,7 +1048,7 @@
               "defaultValue": null
             },
             {
-              "name": "contentBase64",
+              "name": "content",
               "description": null,
               "type": {
                 "kind": "ENUM",
@@ -1096,7 +1064,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "FileSearchInput",
+          "name": "PostSearchInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -1111,7 +1079,7 @@
               "defaultValue": null
             },
             {
-              "name": "contentBase64",
+              "name": "content",
               "description": null,
               "type": {
                 "kind": "SCALAR",
@@ -1127,7 +1095,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "PaginatedFileResponse",
+          "name": "PaginatedPostResponse",
           "description": null,
           "fields": [
             {
@@ -1145,7 +1113,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "File",
+                      "name": "Post",
                       "ofType": null
                     }
                   }
@@ -1510,22 +1478,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "fullName",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -1845,7 +1797,7 @@
               "deprecationReason": null
             },
             {
-              "name": "emailRegister",
+              "name": "createPost",
               "description": null,
               "args": [
                 {
@@ -1856,7 +1808,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UserCreateInput",
+                      "name": "PostCreateInput",
                       "ofType": null
                     }
                   },
@@ -1868,7 +1820,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "LoginResponse",
+                  "name": "Post",
                   "ofType": null
                 }
               },
@@ -1876,68 +1828,7 @@
               "deprecationReason": null
             },
             {
-              "name": "emailLogin",
-              "description": null,
-              "args": [
-                {
-                  "name": "password",
-                  "description": null,
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "email",
-                  "description": null,
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "LoginResponse",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "logout",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "createFile",
+              "name": "updatePost",
               "description": null,
               "args": [
                 {
@@ -1948,7 +1839,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "FileCreateInput",
+                      "name": "PostEditInput",
                       "ofType": null
                     }
                   },
@@ -1960,7 +1851,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "File",
+                  "name": "Post",
                   "ofType": null
                 }
               },
@@ -1968,38 +1859,7 @@
               "deprecationReason": null
             },
             {
-              "name": "updateFile",
-              "description": null,
-              "args": [
-                {
-                  "name": "input",
-                  "description": null,
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "FileEditInput",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "File",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "deleteFiles",
+              "name": "deletePosts",
               "description": null,
               "args": [
                 {
@@ -2341,118 +2201,12 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "UserCreateInput",
+          "name": "PostCreateInput",
           "description": null,
           "fields": null,
           "inputFields": [
             {
-              "name": "email",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "password",
-              "description": null,
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "firstName",
-              "description": null,
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "lastName",
-              "description": null,
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "LoginResponse",
-          "description": null,
-          "fields": [
-            {
-              "name": "token",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "user",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "User",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "FileCreateInput",
-          "description": null,
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "contentBase64",
+              "name": "content",
               "description": null,
               "type": {
                 "kind": "NON_NULL",
@@ -2472,7 +2226,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "FileEditInput",
+          "name": "PostEditInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -2491,7 +2245,7 @@
               "defaultValue": null
             },
             {
-              "name": "contentBase64",
+              "name": "content",
               "description": null,
               "type": {
                 "kind": "SCALAR",
@@ -2642,6 +2396,69 @@
                 "kind": "INPUT_OBJECT",
                 "name": "AgentNestedInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UserCreateInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "email",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "password",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "firstName",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lastName",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
