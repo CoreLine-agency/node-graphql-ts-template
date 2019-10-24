@@ -17,7 +17,7 @@ function getImportPath(type: string, name: string) {
 export function generateNestedInputsImports(fields: Array<IFieldDefinition>, inputClassName: string) {
   return fields
     .filter(field => field.type !== inputClassName)
-    .map((field) => `import { ${field.type} } from '${getImportPath(field.type, field.name)}'`);
+    .map((field) => `import { ${field.type} } from '${getImportPath(field.type, field.otherModelType || 'ERROR')}'`);
 }
 
 export function generateField(field: IFieldDefinition) {
@@ -73,6 +73,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
     type: getOtherType(r),
     visibility: '',
     modelName: name,
+    otherModelType: r.otherTypeName,
   })).map(transformToOptional);
 
   const oneToOneRelations = relations.filter((r) => r.relationType === 'one' && r.otherRelationType === 'one');
@@ -83,6 +84,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
     type: getOtherType(r),
     visibility: '',
     modelName: name,
+    otherModelType: r.otherTypeName,
   })).map(transformToOptional);
 
   const idFields: Array<IFieldDefinition> = [];

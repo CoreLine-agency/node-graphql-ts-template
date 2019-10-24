@@ -1,41 +1,3 @@
-type Agent {
-  id: EntityId!
-  firstName: String!
-  lastName: String!
-  talents: [Talent!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-input AgentCreateInput {
-  firstName: String!
-  lastName: String!
-}
-
-input AgentEditInput {
-  id: EntityId!
-  firstName: String
-  lastName: String
-}
-
-input AgentNestedInput {
-  id: EntityId
-  firstName: String
-  lastName: String
-}
-
-input AgentSearchInput {
-  id: EntityId
-  firstName: String
-  lastName: String
-}
-
-input AgentSearchOrderInput {
-  id: OrderEnum
-  firstName: OrderEnum
-  lastName: OrderEnum
-}
-
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -44,16 +6,64 @@ scalar DateTime
 """ID scalar type"""
 scalar EntityId
 
+type File {
+  id: EntityId!
+  contentBase64: String!
+  post: Post
+  user: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input FileCreateInput {
+  contentBase64: String!
+  post: PostNestedInput
+  user: UserNestedInput
+}
+
+input FileEditInput {
+  id: EntityId!
+  contentBase64: String
+  post: PostNestedInput
+  user: UserNestedInput
+}
+
+input FileNestedInput {
+  id: EntityId
+  contentBase64: String
+  post: PostNestedInput
+  user: UserNestedInput
+}
+
+input FileSearchInput {
+  id: EntityId
+  contentBase64: String
+  post: ReferenceSearchInput
+  user: ReferenceSearchInput
+}
+
+input FileSearchOrderInput {
+  id: OrderEnum
+  contentBase64: OrderEnum
+  post: OrderEnum
+  user: OrderEnum
+}
+
+type LoginResponse {
+  token: String!
+  user: User!
+}
+
 type Mutation {
-  createAgent(input: AgentCreateInput!): Agent!
-  updateAgent(input: AgentEditInput!): Agent!
-  deleteAgents(ids: [ID!]!): Boolean!
+  emailRegister(input: UserCreateInput!): LoginResponse!
+  emailLogin(password: String!, email: String!): LoginResponse!
+  logout: Boolean!
+  createFile(input: FileCreateInput!): File!
+  updateFile(input: FileEditInput!): File!
+  deleteFiles(ids: [ID!]!): Boolean!
   createPost(input: PostCreateInput!): Post!
   updatePost(input: PostEditInput!): Post!
   deletePosts(ids: [ID!]!): Boolean!
-  createTalent(input: TalentCreateInput!): Talent!
-  updateTalent(input: TalentEditInput!): Talent!
-  deleteTalents(ids: [ID!]!): Boolean!
   createUser(input: UserCreateInput!): User!
   updateUser(input: UserEditInput!): User!
   deleteUsers(ids: [ID!]!): Boolean!
@@ -64,8 +74,8 @@ enum OrderEnum {
   ASC
 }
 
-type PaginatedAgentResponse {
-  items: [Agent!]!
+type PaginatedFileResponse {
+  items: [File!]!
   total: Int!
   hasMore: Boolean!
   nextPage: Int!
@@ -73,13 +83,6 @@ type PaginatedAgentResponse {
 
 type PaginatedPostResponse {
   items: [Post!]!
-  total: Int!
-  hasMore: Boolean!
-  nextPage: Int!
-}
-
-type PaginatedTalentResponse {
-  items: [Talent!]!
   total: Int!
   hasMore: Boolean!
   nextPage: Int!
@@ -95,39 +98,51 @@ type PaginatedUserResponse {
 type Post {
   id: EntityId!
   content: String!
+  name: String!
+  author: User!
+  images: [File!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
 input PostCreateInput {
   content: String!
+  name: String!
 }
 
 input PostEditInput {
   id: EntityId!
   content: String
+  name: String
+}
+
+input PostNestedInput {
+  id: EntityId
+  content: String
+  name: String
 }
 
 input PostSearchInput {
   id: EntityId
   content: String
+  name: String
+  author: ReferenceSearchInput
 }
 
 input PostSearchOrderInput {
   id: OrderEnum
   content: OrderEnum
+  name: OrderEnum
+  author: OrderEnum
 }
 
 type Query {
-  agent(id: EntityId!): Agent!
-  searchAgents(order: [AgentSearchOrderInput!], take: Int, skip: Int, search: AgentSearchInput): PaginatedAgentResponse!
-  agents: [Agent!]!
+  file(id: EntityId!): File!
+  searchFiles(order: [FileSearchOrderInput!], take: Int, skip: Int, search: FileSearchInput): PaginatedFileResponse!
+  files: [File!]!
   post(id: EntityId!): Post!
   searchPosts(order: [PostSearchOrderInput!], take: Int, skip: Int, search: PostSearchInput): PaginatedPostResponse!
   posts: [Post!]!
-  talent(id: EntityId!): Talent!
-  searchTalents(order: [TalentSearchOrderInput!], take: Int, skip: Int, search: TalentSearchInput): PaginatedTalentResponse!
-  talents: [Talent!]!
   user(id: EntityId!): User!
   searchUsers(order: [UserSearchOrderInput!], take: Int, skip: Int, search: UserSearchInput): PaginatedUserResponse!
   users: [User!]!
@@ -137,47 +152,13 @@ input ReferenceSearchInput {
   id: EntityId
 }
 
-type Talent {
-  id: EntityId!
-  firstName: String!
-  lastName: String!
-  agent: Agent
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-input TalentCreateInput {
-  firstName: String!
-  lastName: String!
-  agent: AgentNestedInput
-}
-
-input TalentEditInput {
-  id: EntityId!
-  firstName: String
-  lastName: String
-  agent: AgentNestedInput
-}
-
-input TalentSearchInput {
-  id: EntityId
-  firstName: String
-  lastName: String
-  agent: ReferenceSearchInput
-}
-
-input TalentSearchOrderInput {
-  id: OrderEnum
-  firstName: OrderEnum
-  lastName: OrderEnum
-  agent: OrderEnum
-}
-
 type User {
   id: EntityId!
   email: String
   firstName: String!
   lastName: String!
+  posts: [Post!]!
+  profileImage: File
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -187,6 +168,7 @@ input UserCreateInput {
   password: String!
   firstName: String!
   lastName: String!
+  profileImage: FileNestedInput
 }
 
 input UserEditInput {
@@ -195,6 +177,16 @@ input UserEditInput {
   password: String
   firstName: String
   lastName: String
+  profileImage: FileNestedInput
+}
+
+input UserNestedInput {
+  id: EntityId
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  profileImage: FileNestedInput
 }
 
 input UserSearchInput {
@@ -203,6 +195,7 @@ input UserSearchInput {
   password: String
   firstName: String
   lastName: String
+  profileImage: ReferenceSearchInput
 }
 
 input UserSearchOrderInput {
@@ -211,4 +204,5 @@ input UserSearchOrderInput {
   password: OrderEnum
   firstName: OrderEnum
   lastName: OrderEnum
+  profileImage: OrderEnum
 }

@@ -8,6 +8,7 @@ export interface IFieldDefinition {
   optional: boolean;
   modelName: string;
   notNullable?: boolean;
+  otherModelType?: string;
 }
 
 export interface IModelDefinition {

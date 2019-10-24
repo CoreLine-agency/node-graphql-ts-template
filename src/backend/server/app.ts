@@ -28,7 +28,6 @@ async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [
       appRoot.resolve('src/backend/data/*/resolvers/*Resolver.ts'),
-      appRoot.resolve('src/backend/data/*/field-resolvers/*Resolver.ts'),
     ],
     globalMiddlewares: [AuthorizationMiddleware],
     validate: false,
