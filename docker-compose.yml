@@ -1,12 +1,12 @@
 version: '3'
 services:
- talentengien:
-   container_name: talentengien
-   image: postgres:10-alpine
-   restart: always
-   ports:
-   - "32863:5432"
-   environment:
-     POSTGRES_USER: user
-     POSTGRES_PASSWORD: 1234
-     POSTGRES_DB: talentengien
+  coreline-template:
+    container_name: coreline-template
+    image: postgres:10-alpine
+    restart: always
+    ports:
+      - "5402:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: coreline-template
