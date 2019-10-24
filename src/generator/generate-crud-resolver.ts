@@ -1,4 +1,3 @@
-// tslint:disable max-line-length
 import { lowerFirst } from 'lodash';
 import { plural } from 'pluralize';
 import { ISingleErModel } from './model-types';
@@ -8,9 +7,8 @@ export function generateCrudResolver(model: ISingleErModel) {
   const resourceName = lowerFirst(modelName);
 
   return (
-    `// tslint:disable max-line-length
-import { Arg, Args, Mutation, Query, Info, ID, Ctx, Resolver, Root, FieldResolver, Int } from 'type-graphql';
-import * as cleanDeep from 'clean-deep';
+    `import { Arg, Args, Mutation, Query, Info, ID, Ctx, Resolver, Root, FieldResolver, Int } from 'type-graphql';
+import cleanDeep from 'clean-deep';
 
 import { ${modelName} } from '../models/${modelName}';
 import { ${modelName}CreateInput } from '../inputs/${modelName}CreateInput';

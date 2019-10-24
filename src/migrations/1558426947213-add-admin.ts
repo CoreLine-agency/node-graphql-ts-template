@@ -1,4 +1,4 @@
-/* tslint:disable */
+/* eslint-disable */
 import {MigrationInterface, QueryRunner} from "typeorm";
 import { hashPassword } from '../authentication/crypto';
 import { UserRole } from '../user/enums/UserRole';

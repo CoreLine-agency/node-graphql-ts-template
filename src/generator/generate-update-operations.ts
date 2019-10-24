@@ -1,6 +1,4 @@
-// tslint:disable max-line-length
-import { lowerFirst, uniq, upperFirst } from 'lodash';
-import _ = require('lodash');
+import { lowerFirst, uniq, upperFirst, kebabCase } from 'lodash';
 import { ISingleErModel, ISingleErRelation } from './model-types';
 
 function getFieldName(relation: ISingleErRelation) {
@@ -13,7 +11,7 @@ export function generateToOneInitialization(relation: ISingleErRelation, modelNa
   const existingRelationName = `existing${upperFirst(relation.myName)}`;
 
   return (
-`export async function update${upperFirst(relation.myName)}Relation(${modelVariableName}: ${modelName}, ${fieldName}: ${relation.otherTypeName}NestedInput | null | undefined, context: IRequestContext) {
+    `export async function update${upperFirst(relation.myName)}Relation(${modelVariableName}: ${modelName}, ${fieldName}: ${relation.otherTypeName}NestedInput | null | undefined, context: IRequestContext) {
   const ${existingRelationName} = await ${modelVariableName}.${relation.myName};
 
   if (${fieldName} === null) {
@@ -33,21 +31,18 @@ export function generateToOneInitialization(relation: ISingleErRelation, modelNa
 }
 
 function generateNestedInputImport(name: string) {
-  return `import { ${name}NestedInput } from '../../../${_.kebabCase(name)}/inputs/${name}NestedInput';`;
+  return `import { ${name}NestedInput } from '../../../${kebabCase(name)}/inputs/${name}NestedInput';`;
 }
 
 function generateModelImport(name: string) {
-  const kebabName = _.kebabCase(name);
-
-  return `import { ${name} } from '../../../${_.kebabCase(name)}/models/${name}';`;
+  return `import { ${name} } from '../../../${kebabCase(name)}/models/${name}';`;
 }
 
 export function generateUpdateOperations(model: ISingleErModel) {
   const toOneRelations = model.relations.filter((r) => r.relationType === 'one').filter(r => !r.autoAssignKey);
 
   return (
-`// tslint:disable max-line-length
-import { asPromise } from '../../../shared/as-promise';
+    `import { asPromise } from '../../../shared/as-promise';
 import { IRequestContext } from '../../../shared/IRequestContext';
 ${generateModelImport(model.name)};
 ${uniq(toOneRelations.map((r) => generateNestedInputImport(r.otherTypeName))).join('\n')}

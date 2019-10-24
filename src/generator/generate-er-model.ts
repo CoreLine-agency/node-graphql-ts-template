@@ -1,4 +1,4 @@
-// tslint:disable max-line-length
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { kebabCase, lowerFirst, sortedUniq, upperFirst } from 'lodash';
 
 import { generateEnumsImports, generateField } from './generate-base';
@@ -149,8 +149,7 @@ export function generateSingleModel(model: ISingleErModel, ctx: IGeneratorContex
   const dbFields = model.fields.filter((f) => f.visibility === '+' || f.visibility === '-');
 
   return (
-    `// tslint:disable max-line-length no-duplicate-imports
-import { Field, ID, ObjectType } from 'type-graphql';
+    `import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, JoinColumn, Entity, OneToOne, ManyToOne, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 ${generateTypesImports(types.filter(type => type !== model.name))}

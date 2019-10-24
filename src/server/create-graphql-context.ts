@@ -1,4 +1,4 @@
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
 
 import { IToken } from '../authorization/IToken';

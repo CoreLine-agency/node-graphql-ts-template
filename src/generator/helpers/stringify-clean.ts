@@ -1,4 +1,4 @@
-import * as cleanDeep from 'clean-deep';
+import cleanDeep from 'clean-deep';
 import { isEmpty } from 'lodash';
 
 export function stringifyClean(obj: object, literals: Array<string> = [], emptyStringForEmptyObject = true): string {

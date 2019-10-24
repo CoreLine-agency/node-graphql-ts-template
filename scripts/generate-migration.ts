@@ -26,7 +26,7 @@ stdio.question('Migration name: ', migrationName => {
     if (content.indexOf('/* tslint:disable */') > -1) {
       continue;
     }
-    writeFileSync(file, `/* tslint:disable */\n${content}`, { encoding: 'utf8' });
+    writeFileSync(file, `/* eslint-disable */\n${content}`, { encoding: 'utf8' });
   }
 
   stdio.close();

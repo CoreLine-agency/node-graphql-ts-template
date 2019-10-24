@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 import { graphql, GraphQLSchema, introspectionQuery, printSchema } from 'graphql';
 
 export function createGraphqlFile(schema: GraphQLSchema) {

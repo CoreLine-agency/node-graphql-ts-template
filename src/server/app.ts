@@ -1,11 +1,11 @@
 // tslint:disable no-console
-import * as appRoot from 'app-root-path';
-import * as bodyParser from 'body-parser';
-import * as cookieParser from 'cookie-parser';
-import * as express from 'express';
-import * as glob from 'glob';
+import appRoot from 'app-root-path';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import glob from 'glob';
 import { GraphQLServer, Options } from 'graphql-yoga';
-import * as path from 'path';
+import path from 'path';
 import Raven from 'raven';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';

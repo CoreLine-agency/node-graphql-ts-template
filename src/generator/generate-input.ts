@@ -21,7 +21,7 @@ export function generateNestedInputsImports(fields: Array<IFieldDefinition>, inp
 
 export function generateField(field: IFieldDefinition) {
   return (
-`  ${generateFieldDeco(field)}
+    `  ${generateFieldDeco(field)}
   public ${getFieldName(field)}: ${getTsTypeName(field)};`);
 }
 
@@ -104,15 +104,15 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
   const className = `${name}${upperFirst(type)}Input`;
 
   return (
-`import { Field, ID, InputType } from 'type-graphql';
+    `import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 ${generateEnumsImports(model.fields)}
 ${uniq([
-  type === 'searchOrder' ? "import { SortOrderEnum } from '../../shared/SortOrderEnum'" : '',
-  ...generateNestedInputsImports(manyToOneFields, className),
-  ...generateNestedInputsImports(oneToOneFields, className),
-]).filter(x => x).join('\n')}
+      type === 'searchOrder' ? "import { SortOrderEnum } from '../../shared/SortOrderEnum'" : '',
+      ...generateNestedInputsImports(manyToOneFields, className),
+      ...generateNestedInputsImports(oneToOneFields, className),
+    ]).filter(x => x).join('\n')}
 
 // <keep-imports>
 // </keep-imports>

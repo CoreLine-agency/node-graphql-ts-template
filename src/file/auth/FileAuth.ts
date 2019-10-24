@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IAuthorizationChecker } from '../../authorization/IAuthorizationChecker';
 import { IRequestContext } from '../../shared/IRequestContext';
 import { UserRole } from '../../user/enums/UserRole';

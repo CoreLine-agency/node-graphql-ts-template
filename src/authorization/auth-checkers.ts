@@ -1,5 +1,4 @@
-import * as bluebird from 'bluebird';
-import { every } from 'lodash';
+import bluebird from 'bluebird';
 import { UnauthorizedError } from 'type-graphql';
 
 import { IRequestContext } from '../shared/IRequestContext';
@@ -57,8 +56,7 @@ export async function assertCanUpdate<T extends IAuthorizable>(entity: T, ctx: I
   return entity;
 }
 
-export async function assertCanDelete<T extends IAuthorizable>(entity: T | Array<T>, ctx: IRequestContext)
-  : Promise<T | Array<T>> {
+export async function assertCanDelete<T extends IAuthorizable>(entity: T | Array<T>, ctx: IRequestContext): Promise<T | Array<T>> {
   if (entity instanceof Array) {
     await bluebird.map(entity, (e) => assertCanDelete(e, ctx));
 

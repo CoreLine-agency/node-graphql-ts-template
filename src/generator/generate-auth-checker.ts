@@ -6,7 +6,7 @@ export function generateAuthChecker(model: ISingleErModel) {
   const { name } = model;
 
   return (
-`import { IAuthorizationChecker } from '../../authorization/IAuthorizationChecker';
+    `import { IAuthorizationChecker } from '../../authorization/IAuthorizationChecker';
 import { IRequestContext } from '../../shared/IRequestContext';
 import { UserRole } from '../../user/enums/UserRole';
 import { ${name} } from '../models/${name}';

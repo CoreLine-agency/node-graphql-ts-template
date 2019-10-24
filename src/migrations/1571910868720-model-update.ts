@@ -1,4 +1,4 @@
-/* tslint:disable */
+/* eslint-disable */
 import {MigrationInterface, QueryRunner} from "typeorm";
 
 export class modelUpdate1571910868720 implements MigrationInterface {

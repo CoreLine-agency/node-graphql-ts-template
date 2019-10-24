@@ -1,4 +1,5 @@
-import { Arg, Args, Ctx, Mutation, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Resolver } from 'type-graphql';
+
 import { ValidationError } from '../../server/validation-error';
 import { IRequestContext } from '../../shared/IRequestContext';
 import { UserCreateInput } from '../../user/inputs/UserCreateInput';
@@ -8,7 +9,7 @@ import { LoginResponse } from '../inputs/LoginResponse';
 
 @Resolver()
 export class AuthResolver {
-  @Mutation((returns) => LoginResponse)
+  @Mutation(() => LoginResponse)
   public async emailRegister(
     @Arg('input') input: UserCreateInput,
     @Ctx() ctx: IRequestContext,
@@ -33,12 +34,12 @@ export class AuthResolver {
     await ctx.em.save(user);
 
     const token = signUserToken(user);
-    ctx.response!.cookie('token', token);
+    ctx.response.cookie('token', token);
 
     return new LoginResponse(token, user);
   }
 
-  @Mutation((returns) => LoginResponse)
+  @Mutation(() => LoginResponse)
   public async emailLogin(
     @Arg('email') email: string,
     @Arg('password') password: string,
@@ -61,17 +62,17 @@ export class AuthResolver {
       }, 400);
     }
     const token = signUserToken(user);
-    ctx.response!.cookie('token', token);
+    ctx.response.cookie('token', token);
 
     return new LoginResponse(token, user);
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   public async logout(
     @Ctx() ctx: IRequestContext,
   ): Promise<boolean> {
-    if (ctx.request!.cookies.token) {
-      ctx.response!.clearCookie('token');
+    if (ctx.request.cookies.token) {
+      ctx.response.clearCookie('token');
     }
 
     return true;

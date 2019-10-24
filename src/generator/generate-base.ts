@@ -2,7 +2,7 @@ import { upperFirst } from 'lodash';
 import { IGeneratorContext } from './generator-context';
 import { findBetween, findBetweenReversed } from './helpers/find-between';
 import { stringifyClean } from './helpers/stringify-clean';
-import { getEnumName, IFieldDefinition, IModelDefinition, isEnum, ISingleErModel } from './model-types';
+import { getEnumName, IFieldDefinition, isEnum } from './model-types';
 
 export function generateFieldDeco(field: IFieldDefinition) {
   if (field.visibility === '+') {
@@ -15,8 +15,8 @@ export function generateFieldDeco(field: IFieldDefinition) {
 
   const type
     = field.type === 'EntityId' ? 'EntityIdScalar'
-    : isEnum(field)             ? getEnumName(field)
-                                : upperFirst(field.type);
+      : isEnum(field)             ? getEnumName(field)
+        : upperFirst(field.type);
 
   return `@Field(() => ${type}, ${columnArgs})`;
 }
@@ -56,10 +56,10 @@ export const generateField = (ctx: IGeneratorContext) => (field: IFieldDefinitio
 
   const columnArgsDefault = stringifyClean({
     nullable: field.optional || undefined,
-      type: field.dbType,
-      enum: isEnum(field) ? getEnumName(field) : undefined,
-    },
-    ['enum'],
+    type: field.dbType,
+    enum: isEnum(field) ? getEnumName(field) : undefined,
+  },
+  ['enum'],
   );
 
   const columnArgsFromCode = customColumnData ? `
@@ -76,7 +76,7 @@ export const generateField = (ctx: IGeneratorContext) => (field: IFieldDefinitio
     `{${columnArgsFromCode}  }`;
 
   return (
-`  ${generateFieldDeco(field)}
+    `  ${generateFieldDeco(field)}
   @Column(${columnArgs})
   public ${getFieldName(field)}: ${getTsTypeName(field)};`);
 };
