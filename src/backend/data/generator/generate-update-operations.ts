@@ -38,6 +38,7 @@ function generateNestedInputImport(name: string) {
 
 function generateModelImport(name: string) {
   const kebabName = _.kebabCase(name);
+
   return `import { ${name} } from '../../../${name}/models/${name}';`;
 }
 
