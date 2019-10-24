@@ -3,7 +3,6 @@ import * as appRoot from 'app-root-path';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
-import * as asyncWrap from 'express-async-wrapper';
 import { GraphQLServer, Options } from 'graphql-yoga';
 import * as Raven from 'raven';
 import { buildSchema } from 'type-graphql';
@@ -27,7 +26,7 @@ Raven.config(config.sentryDsn, {
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [
-      appRoot.resolve('src/data/*/resolvers/*Resolver.ts'),
+      appRoot.resolve('src/*/resolvers/*Resolver.ts'),
     ],
     globalMiddlewares: [AuthorizationMiddleware],
     validate: false,

@@ -1,6 +1,5 @@
 import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import { randomBytes } from 'src/Authentication/crypto';
 
 import config from '../server/config';
 import { User } from '../User/models/User';
@@ -26,8 +25,4 @@ export function signUserToken(user: User) {
       role: user.role,
     },
   });
-}
-
-export function generateCode(): string {
-  return randomBytes(3).toString('hex').toUpperCase();
 }
