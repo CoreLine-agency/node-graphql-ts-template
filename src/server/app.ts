@@ -3,7 +3,9 @@ import * as appRoot from 'app-root-path';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
+import * as glob from 'glob';
 import { GraphQLServer, Options } from 'graphql-yoga';
+import * as path from 'path';
 import * as Raven from 'raven';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
@@ -13,8 +15,8 @@ import { AuthorizationMiddleware } from '../authorization/AuthorizationMiddlewar
 import config from './config';
 import { createGraphqlContext } from './create-graphql-context';
 import { formatError, ravenMiddleware } from './format-error';
-import { createGraphqlFile, createSchemaJsonFile } from './server-helpers';
 import { isDevEnv } from './is-dev-env';
+import { createGraphqlFile, createSchemaJsonFile } from './server-helpers';
 
 Raven.config(config.sentryDsn, {
   environment: config.environment,
@@ -68,6 +70,13 @@ async function bootstrap() {
   }
 
   await createConnection(connectionOptions);
+
+  const initializers = glob.sync(path.join(__dirname, '*/-controller'))
+    .map(modulePath => require(modulePath)) // tslint:disable-line:non-literal-require
+    .map(module => module.default)
+    .filter(initializer => initializer);
+
+  initializers.forEach(initializeController => initializeController(app));
 
   await server.start(serverOptions, ({ playground }) => {
     console.log(
