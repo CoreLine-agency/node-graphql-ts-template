@@ -2,31 +2,25 @@
 import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../../EntityId';
+
 import { SortOrderEnum } from '../../SortOrderEnum';
-import { UserRole } from '../enums/UserRole';
 
 // <keep-imports>
 // </keep-imports>
 
 @InputType()
-export class UserSearchOrderInput {
+export class FileSearchOrderInput {
   @Field(() => SortOrderEnum, { nullable: true })
   public id?: SortOrderEnum;
 
   @Field(() => SortOrderEnum, { nullable: true })
-  public email?: SortOrderEnum | null;
+  public contentBase64?: SortOrderEnum | null;
 
   @Field(() => SortOrderEnum, { nullable: true })
-  public password?: SortOrderEnum | null;
+  public post?: SortOrderEnum | null;
 
   @Field(() => SortOrderEnum, { nullable: true })
-  public firstName?: SortOrderEnum | null;
-
-  @Field(() => SortOrderEnum, { nullable: true })
-  public lastName?: SortOrderEnum | null;
-
-  @Field(() => SortOrderEnum, { nullable: true })
-  public profileImage?: SortOrderEnum | null;
+  public user?: SortOrderEnum | null;
 
   // <keep-methods>
   // </keep-methods>

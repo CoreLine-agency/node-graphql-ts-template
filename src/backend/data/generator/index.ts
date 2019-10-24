@@ -119,7 +119,7 @@ function fileToGeneratorContext(dir: string, name: string): IGeneratorContext {
     await writeToFile(searchOrder, `${namePath}/inputs`, `${name}SearchOrderInput.ts`, true);
 
     await writeToFile(dbModel, `${namePath}/models`, `${name}.ts`, true);
-    await writeToFile(resolver, `${namePath}/field-resolvers`, `${name}Resolver.ts`, false);
+    await writeToFile(resolver, `${namePath}/resolvers`, `${name}Resolver.ts`, false);
     await writeToFile(crudResolver, `${namePath}/resolvers`, `${name}CrudResolver.ts`, true);
 
     await bluebird.each(model.fields.filter(isEnum), async (field) => {

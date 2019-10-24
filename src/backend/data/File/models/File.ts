@@ -3,21 +3,21 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
+import { Post } from '../../Post/models/Post';
+import { User } from '../../User/models/User';
+
 import { asPromise } from '../../../utils/as-promise';
 import * as auth from '../../../utils/auth/auth-checkers';
 import { IAuthorizable } from '../../../utils/auth/IAuthorizable';
 import { getInputOperationType } from '../../../utils/get-input-operation-type';
 import { noChange } from '../../../utils/no-change';
 import { EntityId, EntityIdScalar } from '../../EntityId';
-import { File } from '../../File/models/File';
 import { IRequestContext } from '../../IRequestContext';
-import { Post } from '../../Post/models/Post';
-import { UserAuth } from '../auth/UserAuth';
-import { UserRole } from '../enums/UserRole';
-import { UserCreateInput } from '../inputs/UserCreateInput';
-import { UserEditInput } from '../inputs/UserEditInput';
-import { UserNestedInput } from '../inputs/UserNestedInput';
-import { updateProfileImageRelation } from './update-operations/user-update-operations';
+import { FileAuth } from '../auth/FileAuth';
+import { FileCreateInput } from '../inputs/FileCreateInput';
+import { FileEditInput } from '../inputs/FileEditInput';
+import { FileNestedInput } from '../inputs/FileNestedInput';
+import { updatePostRelation, updateUserRelation } from './update-operations/file-update-operations';
 
 // <keep-imports>
 // </keep-imports>
@@ -26,53 +26,34 @@ import { updateProfileImageRelation } from './update-operations/user-update-oper
 // </keep-decorators>
 @Entity()
 @ObjectType()
-export class User implements IAuthorizable {
+export class File implements IAuthorizable {
   @Field(() => EntityIdScalar)
   @PrimaryGeneratedColumn()
   public id: EntityId;
 
-  public authorizationChecker = new UserAuth(this);
-
-  @Field(() => String, { nullable: true })
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public email?: string | null;
-
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public passwordHash?: string | null;
+  public authorizationChecker = new FileAuth(this);
 
   @Field(() => String)
+  @Column({type: 'text',
+    // <custom-column-args>
+    // </custom-column-args>
+  })
+  public contentBase64: string;
+
   @Column({
     // <custom-column-args>
     // </custom-column-args>
   })
-  public firstName: string;
+  public slug: string;
 
-  @Field(() => String)
-  @Column({
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public lastName: string;
+  @ManyToOne(() => Post, (post) => post.images , { nullable: true, onDelete: 'SET NULL' })
+  @Field(() => Post , { nullable: true })
+  public post: Promise<Post | undefined | null>;
 
-  @Column({enum: UserRole,
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public role: UserRole;
-
-  @OneToMany(() => Post, (post) => post.author)
-  @Field(() => [Post])
-  public posts: Promise<Array<Post>>;
-
-  @OneToOne(() => File, (file) => file.user)
-  @Field(() => File , { nullable: true })
-  public profileImage: Promise<File | undefined | null>;
+  @OneToOne(() => User, (user) => user.profileImage , { nullable: true, onDelete: 'SET NULL' })
+  @Field(() => User , { nullable: true })
+  @JoinColumn()
+  public user: Promise<User | undefined | null>;
 
   @CreateDateColumn()
   @Field()
@@ -82,8 +63,8 @@ export class User implements IAuthorizable {
   @Field()
   public updatedAt: Date;
 
-  public async update(input: UserCreateInput | UserEditInput | UserNestedInput, context: IRequestContext) {
-    const { profileImage, ...data } = input;
+  public async update(input: FileCreateInput | FileEditInput | FileNestedInput, context: IRequestContext) {
+    const { post, user, ...data } = input;
     if (noChange(input)) {
       return this;
     }
@@ -92,7 +73,9 @@ export class User implements IAuthorizable {
     }
     Object.assign(this, data);
 
-    await updateProfileImageRelation(this, profileImage, context);
+    await updatePostRelation(this, post, context);
+
+    await updateUserRelation(this, user, context);
 
     context.modelsToSave.push(this);
 

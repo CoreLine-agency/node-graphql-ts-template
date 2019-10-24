@@ -3,21 +3,21 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
+import { File } from '../../File/models/File';
+import { User } from '../../User/models/User';
+
 import { asPromise } from '../../../utils/as-promise';
 import * as auth from '../../../utils/auth/auth-checkers';
 import { IAuthorizable } from '../../../utils/auth/IAuthorizable';
 import { getInputOperationType } from '../../../utils/get-input-operation-type';
 import { noChange } from '../../../utils/no-change';
 import { EntityId, EntityIdScalar } from '../../EntityId';
-import { File } from '../../File/models/File';
 import { IRequestContext } from '../../IRequestContext';
-import { Post } from '../../Post/models/Post';
-import { UserAuth } from '../auth/UserAuth';
-import { UserRole } from '../enums/UserRole';
-import { UserCreateInput } from '../inputs/UserCreateInput';
-import { UserEditInput } from '../inputs/UserEditInput';
-import { UserNestedInput } from '../inputs/UserNestedInput';
-import { updateProfileImageRelation } from './update-operations/user-update-operations';
+import { PostAuth } from '../auth/PostAuth';
+import { PostCreateInput } from '../inputs/PostCreateInput';
+import { PostEditInput } from '../inputs/PostEditInput';
+import { PostNestedInput } from '../inputs/PostNestedInput';
+import {  } from './update-operations/post-update-operations';
 
 // <keep-imports>
 // </keep-imports>
@@ -26,53 +26,34 @@ import { updateProfileImageRelation } from './update-operations/user-update-oper
 // </keep-decorators>
 @Entity()
 @ObjectType()
-export class User implements IAuthorizable {
+export class Post implements IAuthorizable {
   @Field(() => EntityIdScalar)
   @PrimaryGeneratedColumn()
   public id: EntityId;
 
-  public authorizationChecker = new UserAuth(this);
-
-  @Field(() => String, { nullable: true })
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public email?: string | null;
-
-  @Column({nullable: true, type: 'varchar',
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public passwordHash?: string | null;
+  public authorizationChecker = new PostAuth(this);
 
   @Field(() => String)
   @Column({
     // <custom-column-args>
     // </custom-column-args>
   })
-  public firstName: string;
+  public content: string;
 
   @Field(() => String)
   @Column({
     // <custom-column-args>
     // </custom-column-args>
   })
-  public lastName: string;
+  public name: string;
 
-  @Column({enum: UserRole,
-    // <custom-column-args>
-    // </custom-column-args>
-  })
-  public role: UserRole;
+  @ManyToOne(() => User, (user) => user.posts , { nullable: false, onDelete: 'CASCADE' })
+  @Field(() => User , { nullable: false })
+  public author: Promise<User>;
 
-  @OneToMany(() => Post, (post) => post.author)
-  @Field(() => [Post])
-  public posts: Promise<Array<Post>>;
-
-  @OneToOne(() => File, (file) => file.user)
-  @Field(() => File , { nullable: true })
-  public profileImage: Promise<File | undefined | null>;
+  @OneToMany(() => File, (file) => file.post)
+  @Field(() => [File])
+  public images: Promise<Array<File>>;
 
   @CreateDateColumn()
   @Field()
@@ -82,8 +63,8 @@ export class User implements IAuthorizable {
   @Field()
   public updatedAt: Date;
 
-  public async update(input: UserCreateInput | UserEditInput | UserNestedInput, context: IRequestContext) {
-    const { profileImage, ...data } = input;
+  public async update(input: PostCreateInput | PostEditInput | PostNestedInput, context: IRequestContext) {
+    const data = input;
     if (noChange(input)) {
       return this;
     }
@@ -92,7 +73,9 @@ export class User implements IAuthorizable {
     }
     Object.assign(this, data);
 
-    await updateProfileImageRelation(this, profileImage, context);
+    if (getInputOperationType(this, input) === 'create') {
+      this.author = asPromise(await this.author || await context.user);
+    }
 
     context.modelsToSave.push(this);
 

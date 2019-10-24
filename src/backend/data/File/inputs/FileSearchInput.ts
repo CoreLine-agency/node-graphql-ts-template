@@ -2,31 +2,25 @@
 import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../../EntityId';
+
 import { ReferenceSearchInput } from '../../inputs/ReferenceSearchInput';
-import { UserRole } from '../enums/UserRole';
 
 // <keep-imports>
 // </keep-imports>
 
 @InputType()
-export class UserSearchInput {
+export class FileSearchInput {
   @Field(() => EntityIdScalar, { nullable: true })
   public id?: EntityId;
 
   @Field(() => String, { nullable: true })
-  public email?: string | null;
-
-  @Field(() => String, { nullable: true })
-  public password?: string | null;
-
-  @Field(() => String, { nullable: true })
-  public firstName?: string | null;
-
-  @Field(() => String, { nullable: true })
-  public lastName?: string | null;
+  public contentBase64?: string | null;
 
   @Field(() => ReferenceSearchInput, { nullable: true })
-  public profileImage?: ReferenceSearchInput | null;
+  public post?: ReferenceSearchInput | null;
+
+  @Field(() => ReferenceSearchInput, { nullable: true })
+  public user?: ReferenceSearchInput | null;
 
   // <keep-methods>
   // </keep-methods>
