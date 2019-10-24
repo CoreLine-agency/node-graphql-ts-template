@@ -39,7 +39,7 @@
     "graphql-yoga": "^1.17.4",
     "growl": "^1.10.0",
     "jsonwebtoken": "^8.3.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "pg": "^7.4.3",
     "pluralize": "^7.0.0",
     "pretty-error": "^2.1.1",
