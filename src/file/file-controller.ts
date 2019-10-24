@@ -1,5 +1,6 @@
 import { Request, Response, Application } from 'express';
 import { getRepository } from 'typeorm';
+import asyncWrapper from 'express-async-wrapper';
 
 import { File } from './models/File';
 
@@ -23,5 +24,5 @@ export async function getFile(req: Request, res: Response) {
 }
 
 export default (app: Application) => {
-  app.get('/:slug', getFile);
+  app.get('/files/:slug', asyncWrapper(getFile));
 }

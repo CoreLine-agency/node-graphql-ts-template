@@ -1,32 +1,19 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
-    "module": "commonjs",
     "target": "es5",
-    "lib": ["es6", "dom", "es2017"],
-    "sourceMap": true,
-    "allowJs": true,
-    "jsx": "react",
-    "rootDir": ".",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
+    "module": "commonjs",
+    "lib": ["es2017", "es7", "es6", "dom"],
+    "declaration": true,
+    "strict": true,
+    "esModuleInterop": true,
     "noImplicitAny": false,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
-    "experimentalDecorators": true,
+    "skipLibCheck": true,
     "emitDecoratorMetadata": true,
-    "noUnusedParameters": false,
-    "baseUrl": "."
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false
   },
   "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "src/setupTests.ts"
+    "node_modules"
   ]
 }

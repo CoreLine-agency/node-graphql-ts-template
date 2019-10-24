@@ -6,7 +6,7 @@ import * as express from 'express';
 import * as glob from 'glob';
 import { GraphQLServer, Options } from 'graphql-yoga';
 import * as path from 'path';
-import * as Raven from 'raven';
+import Raven from 'raven';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 
