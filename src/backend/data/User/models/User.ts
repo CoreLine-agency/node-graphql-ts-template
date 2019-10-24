@@ -20,6 +20,7 @@ import { UserNestedInput } from '../inputs/UserNestedInput';
 import { updateProfileImageRelation } from './update-operations/user-update-operations';
 
 // <keep-imports>
+import { verifyPassword } from '../../../utils/crypto';
 // </keep-imports>
 
 // <keep-decorators>
@@ -104,5 +105,8 @@ export class User implements IAuthorizable {
   }
 
   // <keep-methods>
+  public async passwordMatches(password: string) {
+    return verifyPassword(password, this.passwordHash);
+  }
   // </keep-methods>
 }

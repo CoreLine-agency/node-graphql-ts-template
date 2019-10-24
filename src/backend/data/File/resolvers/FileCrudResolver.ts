@@ -3,7 +3,6 @@
 import * as cleanDeep from 'clean-deep';
 import { Arg, Args, Ctx, FieldResolver, ID, Info, Int, Mutation, Query, Resolver, Root } from 'type-graphql';
 
-import { addEagerFlags } from '../../../utils/add-eager-flags';
 import * as auth from '../../../utils/auth/auth-checkers';
 import { getFindOptions } from '../../../utils/get-find-options';
 import { resolveGetters } from '../../../utils/resolve-getters';
@@ -25,7 +24,7 @@ const PaginatedFileResponse = PaginatedResponse(File);
 export class FileCrudResolver {
   @Query(() => File)
   public async file(@Arg('id', () => EntityIdScalar) id: number, @Info() info, @Ctx() ctx: IRequestContext) {
-    return addEagerFlags(await ctx.em.findOneOrFail(File, id, getFindOptions(File, info)));
+    return ctx.em.findOneOrFail(File, id, getFindOptions(File, info));
   }
 
   @Query(() => PaginatedFileResponse)
@@ -39,13 +38,13 @@ export class FileCrudResolver {
   ) {
     const defaultFindOptions = getFindOptions(File, info, { transformQueryPath: x => x.replace(/^items./, '') });
 
-    const [items, total] = addEagerFlags(await ctx.em.findAndCount(File, cleanDeep({
+    const [items, total] = await ctx.em.findAndCount(File, cleanDeep({
       ...defaultFindOptions,
       skip,
       take,
       where: resolveGetters(search),
       order: Object.assign({}, ...order),
-    })));
+    }));
 
     return {
       items,
@@ -56,7 +55,7 @@ export class FileCrudResolver {
 
   @Query(() => [File])
   public async files(@Info() info, @Ctx() ctx: IRequestContext) {
-    return addEagerFlags(await ctx.em.find(File, getFindOptions(File, info)));
+    return ctx.em.find(File, getFindOptions(File, info));
   }
 
   @Mutation(() => File)

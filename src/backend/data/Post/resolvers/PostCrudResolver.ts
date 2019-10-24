@@ -3,7 +3,6 @@
 import * as cleanDeep from 'clean-deep';
 import { Arg, Args, Ctx, FieldResolver, ID, Info, Int, Mutation, Query, Resolver, Root } from 'type-graphql';
 
-import { addEagerFlags } from '../../../utils/add-eager-flags';
 import * as auth from '../../../utils/auth/auth-checkers';
 import { getFindOptions } from '../../../utils/get-find-options';
 import { resolveGetters } from '../../../utils/resolve-getters';
@@ -25,7 +24,7 @@ const PaginatedPostResponse = PaginatedResponse(Post);
 export class PostCrudResolver {
   @Query(() => Post)
   public async post(@Arg('id', () => EntityIdScalar) id: number, @Info() info, @Ctx() ctx: IRequestContext) {
-    return addEagerFlags(await ctx.em.findOneOrFail(Post, id, getFindOptions(Post, info)));
+    return ctx.em.findOneOrFail(Post, id, getFindOptions(Post, info));
   }
 
   @Query(() => PaginatedPostResponse)
@@ -39,13 +38,13 @@ export class PostCrudResolver {
   ) {
     const defaultFindOptions = getFindOptions(Post, info, { transformQueryPath: x => x.replace(/^items./, '') });
 
-    const [items, total] = addEagerFlags(await ctx.em.findAndCount(Post, cleanDeep({
+    const [items, total] = await ctx.em.findAndCount(Post, cleanDeep({
       ...defaultFindOptions,
       skip,
       take,
       where: resolveGetters(search),
       order: Object.assign({}, ...order),
-    })));
+    }));
 
     return {
       items,
@@ -56,7 +55,7 @@ export class PostCrudResolver {
 
   @Query(() => [Post])
   public async posts(@Info() info, @Ctx() ctx: IRequestContext) {
-    return addEagerFlags(await ctx.em.find(Post, getFindOptions(Post, info)));
+    return ctx.em.find(Post, getFindOptions(Post, info));
   }
 
   @Mutation(() => Post)

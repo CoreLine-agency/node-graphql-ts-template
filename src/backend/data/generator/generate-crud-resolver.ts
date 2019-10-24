@@ -20,7 +20,6 @@ import { ${modelName}SearchOrderInput } from '../inputs/${modelName}SearchOrderI
 import { getFindOptions } from '../../../utils/get-find-options';
 import { EntityId, EntityIdScalar } from '../../EntityId';
 import { IRequestContext } from '../../IRequestContext';
-import { addEagerFlags } from '../../../utils/add-eager-flags';
 import * as auth from '../../../utils/auth/auth-checkers';
 import { PaginatedResponse } from '../../PaginationResponse';
 import { resolveGetters } from '../../../utils/resolve-getters';
@@ -34,7 +33,7 @@ const Paginated${modelName}Response = PaginatedResponse(${modelName});
 export class ${modelName}CrudResolver {
   @Query(() => ${modelName})
   async ${resourceName}(@Arg('id', () => EntityIdScalar) id: number, @Info() info, @Ctx() ctx: IRequestContext) {
-    return addEagerFlags(await ctx.em.findOneOrFail(${modelName}, id, getFindOptions(${modelName}, info)));
+    return await ctx.em.findOneOrFail(${modelName}, id, getFindOptions(${modelName}, info));
   }
 
   @Query(() => Paginated${modelName}Response)
@@ -48,13 +47,13 @@ export class ${modelName}CrudResolver {
   ) {
     const defaultFindOptions = getFindOptions(${modelName}, info, { transformQueryPath: x => x.replace(/^items./, '') });
 
-    const [items, total] = addEagerFlags(await ctx.em.findAndCount(${modelName}, cleanDeep({
+    const [items, total] = await ctx.em.findAndCount(${modelName}, cleanDeep({
       ...defaultFindOptions,
       skip,
       take,
       where: resolveGetters(search),
       order: Object.assign({}, ...order),
-    })));
+    }));
 
     return {
       items,
@@ -65,7 +64,7 @@ export class ${modelName}CrudResolver {
 
   @Query(() => [${modelName}])
   async ${plural(resourceName)}(@Info() info, @Ctx() ctx: IRequestContext) {
-    return addEagerFlags(await ctx.em.find(${modelName}, getFindOptions(${modelName}, info)));
+    return await ctx.em.find(${modelName}, getFindOptions(${modelName}, info));
   }
 
   @Mutation(() => ${modelName})
