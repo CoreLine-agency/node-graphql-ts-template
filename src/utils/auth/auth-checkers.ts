@@ -2,7 +2,7 @@ import * as bluebird from 'bluebird';
 import { every } from 'lodash';
 import { UnauthorizedError } from 'type-graphql';
 
-import { IRequestContext } from '../../data/IRequestContext';
+import { IRequestContext } from '../../data/shared/IRequestContext';
 import { IAuthorizable } from './IAuthorizable';
 
 export async function canRead(

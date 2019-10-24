@@ -48,7 +48,7 @@ export function generateUpdateOperations(model: ISingleErModel) {
   return (
 `// tslint:disable max-line-length
 import { asPromise } from '../../../../utils/as-promise';
-import { IRequestContext } from '../../../IRequestContext';
+import { IRequestContext } from '../../../shared/IRequestContext';
 ${generateModelImport(model.name)};
 ${uniq(toOneRelations.map((r) => generateNestedInputImport(r.otherTypeName))).join('\n')}
 ${uniq(toOneRelations.filter(r => r.otherTypeName !== model.name).map((r) => generateModelImport(r.otherTypeName))).join('\n')}

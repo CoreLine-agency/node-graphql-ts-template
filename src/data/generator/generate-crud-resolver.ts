@@ -19,9 +19,9 @@ import { ${modelName}SearchInput } from '../inputs/${modelName}SearchInput';
 import { ${modelName}SearchOrderInput } from '../inputs/${modelName}SearchOrderInput';
 import { getFindOptions } from '../../../utils/get-find-options';
 import { EntityId, EntityIdScalar } from '../../shared/EntityId';
-import { IRequestContext } from '../../IRequestContext';
+import { IRequestContext } from '../../shared/IRequestContext';
 import * as auth from '../../../utils/auth/auth-checkers';
-import { PaginatedResponse } from '../../PaginationResponse';
+import { PaginatedResponse } from '../../shared/PaginationResponse';
 import { resolveGetters } from '../../../utils/resolve-getters';
 
 // <keep-imports>

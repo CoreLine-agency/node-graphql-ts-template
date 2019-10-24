@@ -5,7 +5,7 @@ import { IFieldDefinition, ISingleErModel, ISingleErRelation } from './model-typ
 
 function getImportPath(type: string, name: string) {
   if (type === 'SortOrderEnum') {
-    return `../../SortOrderEnum`;
+    return `../../shared/SortOrderEnum`;
   }
 
   if (type === 'ReferenceSearchInput') {
@@ -110,7 +110,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
 import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 ${generateEnumsImports(model.fields)}
 ${uniq([
-  type === 'searchOrder' ? "import { SortOrderEnum } from '../../SortOrderEnum'" : '',
+  type === 'searchOrder' ? "import { SortOrderEnum } from '../../shared/SortOrderEnum'" : '',
   ...generateNestedInputsImports(manyToOneFields, className),
   ...generateNestedInputsImports(oneToOneFields, className),
 ]).filter(x => x).join('\n')}

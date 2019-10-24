@@ -1,4 +1,4 @@
-import { IRequestContext } from '../../data/IRequestContext';
+import { IRequestContext } from '../../data/shared/IRequestContext';
 
 export interface IAuthorizationChecker {
   canRead(ctx: IRequestContext, field?: string): Promise<boolean>;

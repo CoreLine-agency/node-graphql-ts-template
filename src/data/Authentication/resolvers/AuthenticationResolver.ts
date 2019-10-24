@@ -1,7 +1,7 @@
 import { Arg, Args, Ctx, Mutation, Resolver } from 'type-graphql';
 import { ValidationError } from '../../../server/validation-error';
 import { signUserToken } from '../../../utils/crypto';
-import { IRequestContext } from '../../IRequestContext';
+import { IRequestContext } from '../../shared/IRequestContext';
 import { UserCreateInput } from '../../User/inputs/UserCreateInput';
 import { User } from '../../User/models/User';
 import { LoginResponse } from '../inputs/LoginResponse';

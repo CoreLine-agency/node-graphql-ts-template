@@ -159,7 +159,7 @@ import * as auth from '../../../utils/auth/auth-checkers';
 import { ${name}CreateInput } from '../inputs/${name}CreateInput';
 import { ${name}EditInput } from '../inputs/${name}EditInput';
 import { ${name}NestedInput } from '../inputs/${name}NestedInput';
-import { IRequestContext } from '../../IRequestContext';
+import { IRequestContext } from '../../shared/IRequestContext';
 import { IAuthorizable } from '../../../utils/auth/IAuthorizable';
 import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 import { ${name}Auth } from '../auth/${name}Auth';

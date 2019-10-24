@@ -1,6 +1,6 @@
 import { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
 
-import { IRequestContext } from '../../data/IRequestContext';
+import { IRequestContext } from '../../data/shared/IRequestContext';
 import { assertCanRead } from './auth-checkers';
 
 export class AuthorizationMiddleware implements MiddlewareInterface<IRequestContext> {

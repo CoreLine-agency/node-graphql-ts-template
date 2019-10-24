@@ -1,4 +1,4 @@
-import { IRequestContext } from '../data/IRequestContext';
+import { IRequestContext } from '../data/shared/IRequestContext';
 
 interface IUpdatable<TModel> {
   update(input, context: IRequestContext): Promise<TModel>;

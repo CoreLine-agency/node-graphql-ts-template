@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
 
-import { IRequestContext } from '../data/IRequestContext';
+import { IRequestContext } from '../data/shared/IRequestContext';
 import { User } from '../data/User/models/User';
 import { IToken } from '../utils/auth/IToken';
 import config from './config';

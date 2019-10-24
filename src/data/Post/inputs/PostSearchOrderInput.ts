@@ -3,7 +3,7 @@ import { Field, ID, InputType } from 'type-graphql';
 
 import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 
-import { SortOrderEnum } from '../../SortOrderEnum';
+import { SortOrderEnum } from '../../shared/SortOrderEnum';
 
 // <keep-imports>
 // </keep-imports>
