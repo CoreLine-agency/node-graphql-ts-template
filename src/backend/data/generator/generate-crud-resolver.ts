@@ -17,13 +17,13 @@ import { ${modelName}CreateInput } from '../inputs/${modelName}CreateInput';
 import { ${modelName}EditInput } from '../inputs/${modelName}EditInput';
 import { ${modelName}SearchInput } from '../inputs/${modelName}SearchInput';
 import { ${modelName}SearchOrderInput } from '../inputs/${modelName}SearchOrderInput';
-import { getFindOptions } from '../../utils/get-find-options';
-import { EntityId, EntityIdScalar } from '../EntityId';
-import { IRequestContext } from '../IRequestContext';
-import { addEagerFlags } from '../../utils/add-eager-flags';
-import * as auth from '../../utils/auth/auth-checkers';
-import { PaginatedResponse } from '../PaginationResponse';
-import { resolveGetters } from '../../utils/resolve-getters';
+import { getFindOptions } from '../../../utils/get-find-options';
+import { EntityId, EntityIdScalar } from '../../EntityId';
+import { IRequestContext } from '../../IRequestContext';
+import { addEagerFlags } from '../../../utils/add-eager-flags';
+import * as auth from '../../../utils/auth/auth-checkers';
+import { PaginatedResponse } from '../../PaginationResponse';
+import { resolveGetters } from '../../../utils/resolve-getters';
 
 // <keep-imports>
 // </keep-imports>

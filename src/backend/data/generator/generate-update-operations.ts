@@ -1,5 +1,6 @@
 // tslint:disable max-line-length
 import { lowerFirst, uniq, upperFirst } from 'lodash';
+import _ = require('lodash');
 import { ISingleErModel, ISingleErRelation } from './model-types';
 
 function getFieldName(relation: ISingleErRelation) {
@@ -32,11 +33,12 @@ export function generateToOneInitialization(relation: ISingleErRelation, modelNa
 }
 
 function generateNestedInputImport(name: string) {
-  return `import { ${name}NestedInput } from '../../inputs/${name}NestedInput';`;
+  return `import { ${name}NestedInput } from '../../../${name}/inputs/${name}NestedInput';`;
 }
 
 function generateModelImport(name: string) {
-  return `import { ${name} } from '../${name}';`;
+  const kebabName = _.kebabCase(name);
+  return `import { ${name} } from '../../../${name}/models/${name}';`;
 }
 
 export function generateUpdateOperations(model: ISingleErModel) {
@@ -44,9 +46,9 @@ export function generateUpdateOperations(model: ISingleErModel) {
 
   return (
 `// tslint:disable max-line-length
-import { asPromise } from '../../../utils/as-promise';
-import { IRequestContext } from '../../IRequestContext';
-import { ${model.name} } from '../${model.name}';
+import { asPromise } from '../../../../utils/as-promise';
+import { IRequestContext } from '../../../IRequestContext';
+${generateModelImport(model.name)}';
 ${uniq(toOneRelations.map((r) => generateNestedInputImport(r.otherTypeName))).join('\n')}
 ${uniq(toOneRelations.filter(r => r.otherTypeName !== model.name).map((r) => generateModelImport(r.otherTypeName))).join('\n')}
 

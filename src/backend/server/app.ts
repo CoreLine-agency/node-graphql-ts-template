@@ -15,7 +15,7 @@ import config from './config';
 import { createGraphqlContext } from './create-graphql-context';
 import { formatError, ravenMiddleware } from './format-error';
 import { createGraphqlFile, createSchemaJsonFile } from './server-helpers';
-import { getFile, isDevEnv } from './utils';
+import { isDevEnv } from './utils';
 
 Raven.config(config.sentryDsn, {
   environment: config.environment,
@@ -27,8 +27,8 @@ Raven.config(config.sentryDsn, {
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [
-      appRoot.resolve('src/backend/data/resolvers/*.ts'),
-      appRoot.resolve('src/backend/data/field-resolvers/*.ts'),
+      appRoot.resolve('src/backend/data/*/resolvers/*Resolver.ts'),
+      appRoot.resolve('src/backend/data/*/field-resolvers/*Resolver.ts'),
     ],
     globalMiddlewares: [AuthorizationMiddleware],
     validate: false,
@@ -68,7 +68,6 @@ async function bootstrap() {
   if (!isDevEnv()) {
     app.use(express.static(appRoot.resolve('build')));
   }
-  app.get('/files/:slug', asyncWrap(getFile));
 
   await createConnection(connectionOptions);
 

@@ -15,9 +15,19 @@ User:
   - lastName
   + role: ADMIN|USER
 
-File:
-  - contentBase64: string text
-  + slug
+Agent:
+  - firstName
+  - lastName
+
+Talent:
+  - firstName
+  - lastName
+
+Post:
+  - content
+
+Agent has many Talent as talents
+Talent has one Agent as agent?
 
 # Relation between tables are defined by pairs of sentences containing table name combined `has many` or `has one`.
 # This allows us to create 1-to-1 and 1-to-N relations
