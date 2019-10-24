@@ -71,7 +71,7 @@ async function bootstrap() {
 
   await createConnection(connectionOptions);
 
-  const initializers = glob.sync(path.join(__dirname, '*/-controller'))
+  const initializers = glob.sync(path.join(__dirname, '../*/-controller.ts'))
     .map(modulePath => require(modulePath)) // tslint:disable-line:non-literal-require
     .map(module => module.default)
     .filter(initializer => initializer);
