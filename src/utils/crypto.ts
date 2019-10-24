@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcryptjs';
-import { randomBytes } from 'src/utils/crypto';
 import { sign } from 'jsonwebtoken';
+import { randomBytes } from 'src/utils/crypto';
 
 import { User } from '../data/User/models/User';
 import config from '../server/config';

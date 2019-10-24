@@ -6,9 +6,9 @@ import { Arg, Args, Ctx, FieldResolver, ID, Info, Int, Mutation, Query, Resolver
 import * as auth from '../../../utils/auth/auth-checkers';
 import { getFindOptions } from '../../../utils/get-find-options';
 import { resolveGetters } from '../../../utils/resolve-getters';
-import { EntityId, EntityIdScalar } from '../../EntityId';
 import { IRequestContext } from '../../IRequestContext';
 import { PaginatedResponse } from '../../PaginationResponse';
+import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 import { UserCreateInput } from '../inputs/UserCreateInput';
 import { UserEditInput } from '../inputs/UserEditInput';
 import { UserSearchInput } from '../inputs/UserSearchInput';

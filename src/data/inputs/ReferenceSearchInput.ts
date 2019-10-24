@@ -1,5 +1,5 @@
 import { Field, InputType } from 'type-graphql';
-import { EntityId, EntityIdScalar } from '../EntityId';
+import { EntityId, EntityIdScalar } from '../shared/EntityId';
 
 @InputType()
 export class ReferenceSearchInput {

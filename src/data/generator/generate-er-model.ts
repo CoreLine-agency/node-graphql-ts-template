@@ -161,7 +161,7 @@ import { ${name}EditInput } from '../inputs/${name}EditInput';
 import { ${name}NestedInput } from '../inputs/${name}NestedInput';
 import { IRequestContext } from '../../IRequestContext';
 import { IAuthorizable } from '../../../utils/auth/IAuthorizable';
-import { EntityId, EntityIdScalar } from '../../EntityId';
+import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 import { ${name}Auth } from '../auth/${name}Auth';
 import { getInputOperationType } from '../../../utils/get-input-operation-type';
 import { asPromise } from '../../../utils/as-promise';

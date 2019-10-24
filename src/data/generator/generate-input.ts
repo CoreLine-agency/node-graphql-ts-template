@@ -107,7 +107,7 @@ export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | '
   return (
 `import { Field, ID, InputType } from 'type-graphql';
 
-import { EntityId, EntityIdScalar } from '../../EntityId';
+import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 ${generateEnumsImports(model.fields)}
 ${uniq([
   type === 'searchOrder' ? "import { SortOrderEnum } from '../../SortOrderEnum'" : '',

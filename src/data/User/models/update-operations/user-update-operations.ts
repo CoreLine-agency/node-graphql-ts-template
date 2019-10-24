@@ -2,7 +2,7 @@
 // tslint:disable max-line-length
 import { asPromise } from '../../../../utils/as-promise';
 import { IRequestContext } from '../../../IRequestContext';
-import { User } from '../User';
+import { User } from '../../../User/models/User';
 import { FileNestedInput } from '../../../File/inputs/FileNestedInput';
 import { File } from '../../../File/models/File';
 
