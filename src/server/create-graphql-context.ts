@@ -1,9 +1,9 @@
 import * as jwt from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
 
-import { IRequestContext } from '../data/shared/IRequestContext';
-import { User } from '../data/User/models/User';
-import { IToken } from '../utils/auth/IToken';
+import { IRequestContext } from '../shared/IRequestContext';
+import { User } from '../User/models/User';
+import { IToken } from '../authorization/IToken';
 import config from './config';
 
 export function createGraphqlContext(context: IRequestContext): IRequestContext {

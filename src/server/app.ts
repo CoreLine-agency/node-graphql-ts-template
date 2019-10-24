@@ -10,7 +10,7 @@ import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 
 import { connectionOptions } from '../../ormconfig/ormconfig';
-import { AuthorizationMiddleware } from '../utils/auth/AuthorizationMiddleware';
+import { AuthorizationMiddleware } from '../authorization/AuthorizationMiddleware';
 import config from './config';
 import { createGraphqlContext } from './create-graphql-context';
 import { formatError, ravenMiddleware } from './format-error';
