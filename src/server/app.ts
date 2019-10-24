@@ -14,7 +14,7 @@ import config from './config';
 import { createGraphqlContext } from './create-graphql-context';
 import { formatError, ravenMiddleware } from './format-error';
 import { createGraphqlFile, createSchemaJsonFile } from './server-helpers';
-import { isDevEnv } from './utils';
+import { isDevEnv } from './is-dev-env';
 
 Raven.config(config.sentryDsn, {
   environment: config.environment,
