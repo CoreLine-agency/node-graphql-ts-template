@@ -6,9 +6,9 @@
   "scripts": {
     "lint": "tslint \"./src/**/*.ts*\"",
     "start": "ts-node scripts/set-development-env && npm run db:start && sleep 3 && npm run db:migration:up && nodemon",
-    "start:production": "node src/backend",
+    "start:production": "node src",
     "proxy": "lt -p 5000",
-    "generate": "ts-node src/backend/data/generator && npm run lint -- --fix",
+    "generate": "ts-node src/data/generator && npm run lint -- --fix",
     "db:migration:create": "ts-node scripts/generate-migration empty",
     "db:migration:generate": "ts-node scripts/generate-migration",
     "db:migration:up": "typeorm migration:run",

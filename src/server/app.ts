@@ -9,7 +9,7 @@ import * as Raven from 'raven';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 
-import { connectionOptions } from '../../../ormconfig/ormconfig';
+import { connectionOptions } from '../../ormconfig/ormconfig';
 import { AuthorizationMiddleware } from '../utils/auth/AuthorizationMiddleware';
 import config from './config';
 import { createGraphqlContext } from './create-graphql-context';
@@ -27,7 +27,7 @@ Raven.config(config.sentryDsn, {
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [
-      appRoot.resolve('src/backend/data/*/resolvers/*Resolver.ts'),
+      appRoot.resolve('src/data/*/resolvers/*Resolver.ts'),
     ],
     globalMiddlewares: [AuthorizationMiddleware],
     validate: false,

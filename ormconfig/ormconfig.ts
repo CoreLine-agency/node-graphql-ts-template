@@ -1,13 +1,13 @@
-import config from '../src/backend/server/config';
+import config from '../src/server/config';
 
 export const connectionOptions: any = {
-  entities: ['src/backend/data/**/models/*.ts'],
+  entities: ['src/data/**/models/*.ts'],
   type: config.databaseType,
   synchronize: config.databaseSynchronize,
   logging: config.databaseLogging,
-  migrations: ['src/backend/data/migrations/**.ts'],
+  migrations: ['src/data/migrations/**.ts'],
   cli: {
-    migrationsDir: 'src/backend/data/migrations',
+    migrationsDir: 'src/data/migrations',
   },
   url: config.databaseUrl,
 };

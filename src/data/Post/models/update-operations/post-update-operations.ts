@@ -2,4 +2,4 @@
 // tslint:disable max-line-length
 import { asPromise } from '../../../../utils/as-promise';
 import { IRequestContext } from '../../../IRequestContext';
-import { Post } from '../../../Post/models/Post';
+import { Post } from '../Post';

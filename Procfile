@@ -1,2 +1,2 @@
-web: node src/backend
+web: node src
 release: npm run migrate:up

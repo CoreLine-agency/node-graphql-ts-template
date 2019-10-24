@@ -13,7 +13,7 @@ Technology stack includes: javascript-node-express-graphql-typeorm-type-graphql
 npm run generate
 ```
 
-Backend is mostly generated from specification file `src/backend/data/model.er`.
+Backend is mostly generated from specification file `src/data/model.er`.
 
 ER (entities' relations) file is a way to define project's relations and fields for relations.
 You can open (and edit) the file for further info.
@@ -65,7 +65,7 @@ npm run proxy
 
 ### Production run
 ```bash
-node src/backend
+node src
 ```
 
 ### Creating an empty migration
