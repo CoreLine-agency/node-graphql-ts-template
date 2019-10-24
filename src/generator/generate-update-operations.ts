@@ -33,13 +33,13 @@ export function generateToOneInitialization(relation: ISingleErRelation, modelNa
 }
 
 function generateNestedInputImport(name: string) {
-  return `import { ${name}NestedInput } from '../../../${name}/inputs/${name}NestedInput';`;
+  return `import { ${name}NestedInput } from '../../../${_.kebabCase(name)}/inputs/${name}NestedInput';`;
 }
 
 function generateModelImport(name: string) {
   const kebabName = _.kebabCase(name);
 
-  return `import { ${name} } from '../../../${name}/models/${name}';`;
+  return `import { ${name} } from '../../../${_.kebabCase(name)}/models/${name}';`;
 }
 
 export function generateUpdateOperations(model: ISingleErModel) {

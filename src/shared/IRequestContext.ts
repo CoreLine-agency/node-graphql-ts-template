@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { EntityManager } from 'typeorm';
-import { User } from '../User/models/User';
 import { IToken } from '../authorization/IToken';
+import { User } from '../user/models/User';
 
 interface IRequest extends Request {
   headers: {

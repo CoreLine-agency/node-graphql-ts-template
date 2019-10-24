@@ -1,18 +1,10 @@
-import { lowerFirst } from 'lodash';
-
-import { ISingleErModel } from './model-types';
-
-export function generateAuthChecker(model: ISingleErModel) {
-  const { name } = model;
-
-  return (
-`import { IAuthorizationChecker } from '../../authorization/IAuthorizationChecker';
+import { IAuthorizationChecker } from '../../authorization/IAuthorizationChecker';
 import { IRequestContext } from '../../shared/IRequestContext';
 import { UserRole } from '../../user/enums/UserRole';
-import { ${name} } from '../models/${name}';
+import { File } from '../models/File';
 
-export class ${name}Auth implements IAuthorizationChecker {
-  public constructor(private ${lowerFirst(name)}: ${name}) {
+export class FileAuth implements IAuthorizationChecker {
+  public constructor(private file: File) {
   }
 
   public async canRead(ctx: IRequestContext, field?: string) {
@@ -43,6 +35,4 @@ export class ${name}Auth implements IAuthorizationChecker {
   public async canDelete(ctx: IRequestContext) {
     return this.canManage(ctx);
   }
-}
-`);
 }

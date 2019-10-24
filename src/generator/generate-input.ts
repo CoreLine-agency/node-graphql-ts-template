@@ -1,5 +1,4 @@
-import { uniq, upperFirst } from 'lodash';
-import _ = require('lodash');
+import { kebabCase, uniq, upperFirst } from 'lodash';
 import { generateEnumsImports, generateFieldDeco, getFieldName, getTsTypeName } from './generate-base';
 import { IFieldDefinition, ISingleErModel, ISingleErRelation } from './model-types';
 
@@ -12,7 +11,7 @@ function getImportPath(type: string, name: string) {
     return `../../shared/ReferenceSearchInput`;
   }
 
-  return `../../${_.capitalize(name)}/inputs/${type}`;
+  return `../../${kebabCase(name)}/inputs/${type}`;
 }
 export function generateNestedInputsImports(fields: Array<IFieldDefinition>, inputClassName: string) {
   return fields

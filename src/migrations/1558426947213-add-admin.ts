@@ -1,7 +1,7 @@
 /* tslint:disable */
 import {MigrationInterface, QueryRunner} from "typeorm";
-import { hashPassword } from '../Authentication/crypto';
-import { UserRole } from '../User/enums/UserRole';
+import { hashPassword } from '../authentication/crypto';
+import { UserRole } from '../user/enums/UserRole';
 
 export class addDefaultAdmin1558426947213 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {

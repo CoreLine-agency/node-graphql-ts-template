@@ -1,13 +1,13 @@
 // tslint:disable max-line-length
-import { lowerFirst, sortedUniq, upperFirst } from 'lodash';
+import { kebabCase, lowerFirst, sortedUniq, upperFirst } from 'lodash';
 
 import { generateEnumsImports, generateField } from './generate-base';
 import { IGeneratorContext } from './generator-context';
 import { asLastArgument, stringifyClean } from './helpers/stringify-clean';
-import { getEnumName, isEnum, ISingleErModel, ISingleErRelation } from './model-types';
+import { ISingleErModel, ISingleErRelation } from './model-types';
 
 export function generateTypeImport(type: string) {
-  return `import { ${type} } from '../../${type}/models/${type}';`;
+  return `import { ${type} } from '../../${kebabCase(type)}/models/${type}';`;
 }
 
 export function generateOneToOneOwnerDeclarations(relations: Array<ISingleErRelation>) {
@@ -164,8 +164,9 @@ import { IAuthorizable } from '../../authorization/IAuthorizable';
 import { EntityId, EntityIdScalar } from '../../shared/EntityId';
 import { ${name}Auth } from '../auth/${name}Auth';
 import { getInputOperationType } from '../../shared/get-input-operation-type';
-import { asPromise } from '../../shared/as-promise';
 import { noChange } from '../../shared/no-change';
+import { asPromise } from '../../shared/as-promise';
+
 ${generateRelationUpdateImports(model.name, model.relations.filter((r) => r.relationType === 'one'))}
 
 // <keep-imports>
