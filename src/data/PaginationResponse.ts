@@ -1,4 +1,4 @@
-import { ClassType, Field, Int, ObjectType } from 'type-graphql/dist';
+import { ClassType, Field, Int, ObjectType } from 'type-graphql';
 
 export function PaginatedResponse<TItem>(TItemClass: ClassType<TItem>) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
