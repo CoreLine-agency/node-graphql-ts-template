@@ -1,2 +1,2 @@
 web: node src
-release: npm run migrate:up
+release: npm run db:migration:up
