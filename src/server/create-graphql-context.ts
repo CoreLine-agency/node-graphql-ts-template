@@ -1,10 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
+import env from 'env-var';
+
+const JWT_SECRET = env.get('JWT_SECRET').required().asString();
 
 import { IToken } from '../authorization/IToken';
 import { IRequestContext } from '../shared/IRequestContext';
 import { User } from '../user/models/User';
-import config from './config';
 
 export function createGraphqlContext(context: IRequestContext): IRequestContext {
   const { request, response } = context;
@@ -16,7 +18,7 @@ export function createGraphqlContext(context: IRequestContext): IRequestContext 
     return ret;
   }
   try {
-    const auth = jwt.verify(token, config.jwtSecret) as IToken;
+    const auth = jwt.verify(token, JWT_SECRET) as IToken;
     if (!auth.user.id || !auth.user.role) {
       return ret;
     }

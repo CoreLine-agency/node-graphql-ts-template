@@ -1,8 +1,10 @@
 import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import env from 'env-var';
 
-import config from '../server/config';
 import { User } from '../user/models/User';
+
+const JWT_SECRET = env.get('JWT_SECRET').required().asString();
 
 export async function hashPassword(password: string): Promise<string> {
   return hash(password, 7);
@@ -14,7 +16,7 @@ export async function verifyPassword(plainPassword: string, hashedPassword?: str
 }
 
 function signToken(input: object) {
-  return sign(input, config.jwtSecret);
+  return sign(input, JWT_SECRET);
 }
 
 export function signUserToken(user: User) {

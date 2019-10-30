@@ -8,19 +8,23 @@ import { GraphQLServer, Options } from 'graphql-yoga';
 import Raven from 'raven';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
+import env from 'env-var';
 
 import { connectionOptions } from '../../ormconfig/ormconfig';
 import { AuthorizationMiddleware } from '../authorization/AuthorizationMiddleware';
-import config from './config';
 import { createGraphqlContext } from './create-graphql-context';
 import { formatError, ravenMiddleware } from './format-error';
 import { isDevEnv } from './is-dev-env';
 import { createGraphqlFile, createSchemaJsonFile } from './server-helpers';
 
-Raven.config(config.sentryDsn, {
-  environment: config.environment,
+const NODE_ENV = env.get('NODE_ENV').required().asString();
+const PORT = env.get('PORT', '5001').asIntPositive();
+const SENTRY_DSN = env.get('SENTRY_DSN').asString();
+
+Raven.config(SENTRY_DSN, {
+  environment: NODE_ENV,
   shouldSendCallback: () => {
-    return config.environment === 'production';
+    return NODE_ENV === 'production';
   },
 }).install();
 
@@ -46,7 +50,7 @@ async function bootstrap() {
   const serverOptions: Options = {
     endpoint: '/graphql',
     playground: '/playground',
-    port: config.port,
+    port: PORT,
     cors: {
       credentials: true,
       origin: (origin, callback) => callback(null, true),
@@ -79,7 +83,7 @@ async function bootstrap() {
 
   await server.start(serverOptions, ({ playground }) => {
     console.log(
-      `Server is running, GraphQL Playground available at http://localhost:${config.port}${playground}`,
+      `Server is running, GraphQL Playground available at http://localhost:${PORT}${playground}`,
     );
   });
 }

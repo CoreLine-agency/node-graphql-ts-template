@@ -1,3 +1,7 @@
+import env from 'env-var';
+
+const NODE_ENV = env.get('NODE_ENV', 'development').asString();
+
 export function isDevEnv() {
-  return process.env.NODE_ENV === undefined || process.env.NODE_ENV === 'development';
+  return NODE_ENV === 'development';
 }
