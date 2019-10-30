@@ -85,7 +85,7 @@ async function writeToFile(data: string, dir: string, name: string, overwrite: b
 }
 
 function fileToGeneratorContext(dir: string, name: string): IGeneratorContext {
-  const dirName = path.join(__dirname, '..', dir);
+  const dirName = appRoot.resolve(dir);
   const filePath = path.join(dirName, name);
   let existingContent;
   try {
@@ -106,7 +106,8 @@ function fileToGeneratorContext(dir: string, name: string): IGeneratorContext {
     const nestedInput = generateInput(model, 'nested');
     const searchInput = generateInput(model, 'search');
     const searchOrder = generateInput(model, 'searchOrder');
-    const dbModel = generateSingleModel(model, fileToGeneratorContext('models', `${name}.ts`));
+    const fileContext = fileToGeneratorContext(path.join('src', _.kebabCase(name), 'models'), `${name}.ts`);
+    const dbModel = generateSingleModel(model, fileContext);
     const resolver = generateFieldResolver(model);
     const crudResolver = generateCrudResolver(model);
     const authChecker = generateAuthChecker(model);

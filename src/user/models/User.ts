@@ -38,6 +38,7 @@ export class User implements IAuthorizable {
   @Field(() => String, )
   @Column({"type":"varchar",
     // <custom-column-args>
+    unique: true,
     // </custom-column-args>
   })
   public email: string;
