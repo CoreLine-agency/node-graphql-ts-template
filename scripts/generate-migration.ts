@@ -23,7 +23,7 @@ stdio.question('Migration name: ', migrationName => {
 
   for (const file of globSync(migrations[0])) {
     const content = readFileSync(file, 'utf8');
-    if (content.indexOf('/* tslint:disable */') > -1) {
+    if (content.indexOf('/* eslint:disable */') > -1) {
       continue;
     }
     writeFileSync(file, `/* eslint-disable */\n${content}`, { encoding: 'utf8' });

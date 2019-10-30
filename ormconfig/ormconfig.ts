@@ -1,3 +1,6 @@
+import 'dotenv/config'
+import 'reflect-metadata';
+
 import env from 'env-var';
 
 const DATABASE_TYPE = env.get('DATABASE_TYPE', 'postgres').asString();

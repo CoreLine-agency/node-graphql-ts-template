@@ -9,6 +9,7 @@ const JWT_SECRET = env.get('JWT_SECRET').required().asString();
 export async function hashPassword(password: string): Promise<string> {
   return hash(password, 7);
 }
+
 export async function verifyPassword(plainPassword: string, hashedPassword?: string | null): Promise<boolean> {
   if (!hashedPassword) { return false; }
 

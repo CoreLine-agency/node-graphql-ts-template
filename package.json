@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "lint": "eslint \"./src/**/*.ts*\"",
+    "lint": "eslint src --ext ts,tsx",
     "start": "ts-node scripts/set-development-env && npm run db:start && sleep 3 && npm run db:migration:up && nodemon",
     "start:production": "node src",
     "proxy": "lt -p 5000",

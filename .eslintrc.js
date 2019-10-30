@@ -4,9 +4,6 @@ module.exports = {
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "parserOptions": {
-    project: './tsconfig.json',
-  },
   "rules": {
     "require-atomic-updates": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
