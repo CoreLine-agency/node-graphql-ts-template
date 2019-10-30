@@ -139,6 +139,7 @@ input PostSearchOrderInput {
 }
 
 type Query {
+  me: User
   file(id: EntityId!): File!
   searchFiles(order: [FileSearchOrderInput!], take: Int, skip: Int, search: FileSearchInput): PaginatedFileResponse!
   files: [File!]!

@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Resolver } from 'type-graphql';
+import {Arg, Ctx, Mutation, Query, Resolver} from 'type-graphql';
 
 import { ValidationError } from '../../server/validation-error';
 import { IRequestContext } from '../../shared/IRequestContext';
@@ -9,6 +9,11 @@ import { LoginResponse } from '../inputs/LoginResponse';
 
 @Resolver()
 export class AuthResolver {
+  @Query(() => User, { nullable: true })
+  public async me(@Ctx() context: IRequestContext) {
+    return context.user;
+  }
+
   @Mutation(() => LoginResponse)
   public async emailRegister(
     @Arg('input') input: UserCreateInput,
