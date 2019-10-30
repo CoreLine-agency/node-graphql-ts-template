@@ -19,10 +19,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/app-root-path": "^1.2.4",
     "@types/config": "0.0.34",
     "@types/express": "^4.11.1",
     "@types/lodash": "^4.14.108",
     "@types/node": "^12.11.6",
+    "app-root-path": "^2.2.1",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.1",
     "clean-deep": "^3.0.2",

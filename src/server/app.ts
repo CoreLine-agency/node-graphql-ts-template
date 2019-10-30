@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import glob from 'glob';
 import { GraphQLServer, Options } from 'graphql-yoga';
-import path from 'path';
 import Raven from 'raven';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
@@ -71,7 +70,7 @@ async function bootstrap() {
 
   await createConnection(connectionOptions);
 
-  const initializers = glob.sync(path.join(__dirname, '../*/-controller.ts'))
+  const initializers = glob.sync(appRoot.resolve('src/*/-controller.ts'))
     .map(modulePath => require(modulePath)) // tslint:disable-line:non-literal-require
     .map(module => module.default)
     .filter(initializer => initializer);

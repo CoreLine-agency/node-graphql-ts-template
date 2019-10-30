@@ -3,6 +3,7 @@ import fs from 'fs';
 import { lowerFirst } from 'lodash';
 import makeDir from 'make-dir';
 import path from 'path';
+import appRoot from 'app-root-path';
 
 import _ = require('lodash');
 import { generateAuthChecker } from './generate-auth-checker';
@@ -17,7 +18,7 @@ import { findBetween, replaceBetween } from './helpers/find-between';
 import { getEnumName, isEnum } from './model-types';
 import { parseErModel } from './parse-er-model';
 
-const modelData = fs.readFileSync(path.join(__dirname, '..', 'model.er'), 'utf8');
+const modelData = fs.readFileSync(appRoot.resolve('src/model.er'), 'utf8');
 const models = parseErModel(modelData);
 
 function insertOldContent(newContent, oldContent, start, end) {
