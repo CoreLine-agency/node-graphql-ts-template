@@ -11,8 +11,8 @@ import { FileNestedInput } from '../../file/inputs/FileNestedInput'
 
 @InputType()
 export class UserCreateInput {
-  @Field(() => String, {"nullable":true})
-  public email?: string | null;
+  @Field(() => String, )
+  public email: string;
 
   @Field(() => String, )
   public password: string;

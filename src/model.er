@@ -8,8 +8,8 @@
 # If field has typescript type defined, database type for the field can be defined by adding it after the typescript type
 
 User:
-  - email?: string varchar
-  + passwordHash?: string varchar
+  - email: string varchar
+  + passwordHash: string varchar
   x password
   - firstName
   - lastName

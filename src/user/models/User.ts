@@ -21,7 +21,7 @@ import { asPromise } from '../../shared/as-promise';
 import { updateProfileImageRelation } from './update-operations/user-update-operations';
 
 // <keep-imports>
-import { verifyPassword } from '../../authentication/crypto';
+import {hashPassword, verifyPassword} from '../../authentication/crypto';
 // </keep-imports>
 
 // <keep-decorators>
@@ -35,19 +35,19 @@ export class User implements IAuthorizable {
 
   public authorizationChecker = new UserAuth(this);
 
-  @Field(() => String, {"nullable":true})
-  @Column({"nullable":true,"type":"varchar",
+  @Field(() => String, )
+  @Column({"type":"varchar",
     // <custom-column-args>
     // </custom-column-args>
   })
-  public email?: string | null;
+  public email: string;
 
   
-  @Column({"nullable":true,"type":"varchar",
+  @Column({"type":"varchar",
     // <custom-column-args>
     // </custom-column-args>
   })
-  public passwordHash?: string | null;
+  public passwordHash: string;
 
   @Field(() => String, )
   @Column({
@@ -101,6 +101,12 @@ export class User implements IAuthorizable {
     context.modelsToSave.push(this);
 
     // <keep-update-code>
+    if (this.role === undefined) {
+      this.role = UserRole.USER;
+    }
+    if (this.passwordHash === undefined && input.password) {
+      this.passwordHash = await hashPassword(input.password);
+    }
     // </keep-update-code>
     await auth.assertCanPersist(this, context);
 

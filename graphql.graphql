@@ -156,7 +156,7 @@ input ReferenceSearchInput {
 
 type User {
   id: EntityId!
-  email: String
+  email: String!
   firstName: String!
   lastName: String!
   posts: [Post!]!
@@ -166,7 +166,7 @@ type User {
 }
 
 input UserCreateInput {
-  email: String
+  email: String!
   password: String!
   firstName: String!
   lastName: String!
