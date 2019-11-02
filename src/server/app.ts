@@ -6,16 +6,16 @@ import express from 'express';
 import glob from 'glob';
 import { GraphQLServer, Options } from 'graphql-yoga';
 import Raven from 'raven';
-import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import env from 'env-var';
+import cors from 'cors';
 
 import { connectionOptions } from '../../ormconfig/ormconfig';
-import { AuthorizationMiddleware } from '../authorization/AuthorizationMiddleware';
 import { createGraphqlContext } from './create-graphql-context';
 import { formatError, ravenMiddleware } from './format-error';
 import { isDevEnv } from './is-dev-env';
 import { createGraphqlFile, createSchemaJsonFile } from './server-helpers';
+import {getServerSchema} from "./services/server-schema";
 
 const NODE_ENV = env.get('NODE_ENV').required().asString();
 const PORT = env.get('PORT', '5001').asIntPositive();
@@ -29,13 +29,8 @@ Raven.config(SENTRY_DSN, {
 }).install();
 
 async function bootstrap() {
-  const schema = await buildSchema({
-    resolvers: [
-      appRoot.resolve('src/*/resolvers/*Resolver.ts'),
-    ],
-    globalMiddlewares: [AuthorizationMiddleware],
-    validate: false,
-  });
+  const schema = await getServerSchema();
+
   createGraphqlFile(schema);
   await createSchemaJsonFile(schema);
 
@@ -63,6 +58,10 @@ async function bootstrap() {
 
   const app = server.express;
 
+  app.use(cors({
+    credentials: true,
+    origin: (origin, callback) => callback(null, true),
+  }));
   app.use(cookieParser());
   app.use(bodyParser.json({ limit: '5mb' }));
   app.use(express.static(appRoot.resolve('public')));

@@ -29,6 +29,7 @@
     "bluebird": "^3.7.1",
     "clean-deep": "^3.0.2",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^6.0.0",
     "env-var": "^5.1.0",
     "express": "^4.15.3",
