@@ -1,27 +1,48 @@
 import express from "express";
 import asyncWrapper from 'express-async-wrapper';
+import pluralize from 'pluralize';
+import _ from 'lodash';
 import {executeGraphqlQuery} from "../server/services/server-schema";
+import {getScalarFieldsSelector} from "./services/graphql-introspection";
 
-const searchUsersQuery = `
-query {
-  searchUsers {
-    total
-    items {
-      id
-      email
-    }
+function pascalCase(x: string) {
+  return _.upperFirst(_.camelCase(x));
+}
+
+function buildSearchArgs(query) {
+  const { _start: start, _end: end } = query;
+  if (!start || !end) {
+    return '';
   }
-}`;
+
+  const take = parseInt(end) - parseInt(start);
+  return `(take: ${take}, skip: ${start})`;
+}
 
 export async function getList(request: express.Request, response: express.Response) {
-  const { data, errors } = await executeGraphqlQuery(searchUsersQuery, {}, { request, response });
-  if (errors) {
-    console.log('errors', errors);
-    response.json(errors);
-    return;
-  }
-  const items = data && data.searchUsers.items;
-  const total = data && data.searchUsers.total;
+  const { resource } = request.params;
+  const typeName = pascalCase(resource);
+  const searchKey = `search${typeName}`;
+
+
+  const userFields = await getScalarFieldsSelector(pluralize.singular(typeName), { request, response });
+  const searchQuery = `
+    query {
+      ${searchKey}${buildSearchArgs(request.query)}{
+        total
+        items {
+          $SCALAR_FIELDS
+        }
+      }
+    }
+  `;
+  const query = searchQuery.replace('$SCALAR_FIELDS', userFields);
+
+  console.log('query', query);
+
+  const data = await executeGraphqlQuery(query,{}, { request, response });
+  const { items, total } = data[searchKey];
+
   response.header('X-Total-Count', total);
   response.json(items);
 }

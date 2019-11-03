@@ -22,5 +22,9 @@ export function getServerSchema() {
 }
 
 export async function executeGraphqlQuery(query: string, root: object, context: any) {
-  return graphql(await getServerSchema(), query, root, createGraphqlContext(context));
+  const { data, errors } = await graphql(await getServerSchema(), query, root, createGraphqlContext(context));
+  if (errors || !data) {
+    throw errors && errors[0];
+  }
+  return data;
 }
