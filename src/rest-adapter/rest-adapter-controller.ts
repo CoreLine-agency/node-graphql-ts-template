@@ -38,8 +38,6 @@ export async function getList(request: express.Request, response: express.Respon
   `;
   const query = searchQuery.replace('$SCALAR_FIELDS', userFields);
 
-  console.log('query', query);
-
   const data = await executeGraphqlQuery(query,{}, { request, response });
   const { items, total } = data[searchKey];
 

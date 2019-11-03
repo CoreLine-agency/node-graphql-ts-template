@@ -1,11 +1,10 @@
-
 export interface OfType {
-  name: string;
+  kind: string;
 }
 
 export interface Type2 {
-  name: string;
   ofType: OfType;
+  kind: string;
 }
 
 export interface Field {
