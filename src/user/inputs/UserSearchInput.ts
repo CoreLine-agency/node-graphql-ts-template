@@ -29,6 +29,12 @@ export class UserSearchInput {
   @Field(() => ReferenceSearchInput, {"nullable":true})
   public profileImage?: ReferenceSearchInput | null;
 
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
+
   // <keep-methods>
   // </keep-methods>
 }

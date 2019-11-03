@@ -42,6 +42,8 @@ input FileSearchInput {
   contentBase64: String
   post: ReferenceSearchInput
   user: ReferenceSearchInput
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input FileSearchOrderInput {
@@ -49,6 +51,8 @@ input FileSearchOrderInput {
   contentBase64: OrderEnum
   post: OrderEnum
   user: OrderEnum
+  createdAt: OrderEnum
+  updatedAt: OrderEnum
 }
 
 type LoginResponse {
@@ -129,6 +133,8 @@ input PostSearchInput {
   content: String
   name: String
   author: ReferenceSearchInput
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input PostSearchOrderInput {
@@ -136,6 +142,8 @@ input PostSearchOrderInput {
   content: OrderEnum
   name: OrderEnum
   author: OrderEnum
+  createdAt: OrderEnum
+  updatedAt: OrderEnum
 }
 
 type Query {
@@ -164,6 +172,7 @@ type User {
   profileImage: File
   createdAt: DateTime!
   updatedAt: DateTime!
+  fullName: String!
 }
 
 input UserCreateInput {
@@ -199,6 +208,8 @@ input UserSearchInput {
   firstName: String
   lastName: String
   profileImage: ReferenceSearchInput
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input UserSearchOrderInput {
@@ -208,4 +219,6 @@ input UserSearchOrderInput {
   firstName: OrderEnum
   lastName: OrderEnum
   profileImage: OrderEnum
+  createdAt: OrderEnum
+  updatedAt: OrderEnum
 }

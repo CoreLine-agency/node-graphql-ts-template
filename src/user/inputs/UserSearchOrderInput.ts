@@ -29,6 +29,12 @@ export class UserSearchOrderInput {
   @Field(() => SortOrderEnum, {"nullable":true})
   public profileImage?: SortOrderEnum | null;
 
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public createdAt?: SortOrderEnum | null;
+
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public updatedAt?: SortOrderEnum | null;
+
   // <keep-methods>
   // </keep-methods>
 }

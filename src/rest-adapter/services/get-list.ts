@@ -11,13 +11,16 @@ function pascalCase(x: string) {
 }
 
 function buildSearchArgs(query) {
-  const { _start: start, _end: end } = query;
-  if (!start || !end) {
-    return '';
-  }
+  const {
+    _start: start = 0,
+    _end: end = 100,
+    _sort: sort = 'id',
+    _order: order = 'ASC',
+    ...fields
+  } = query;
 
   const take = parseInt(end) - parseInt(start);
-  return `(take: ${take}, skip: ${start})`;
+  return `(take: ${take}, skip: ${start}, order: { ${sort}: ${order} })`;
 }
 
 export async function getList(request: express.Request, response: express.Response) {

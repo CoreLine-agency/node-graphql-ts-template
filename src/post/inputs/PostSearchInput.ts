@@ -23,6 +23,12 @@ export class PostSearchInput {
   @Field(() => ReferenceSearchInput, {"nullable":true})
   public author?: ReferenceSearchInput | null;
 
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
+
   // <keep-methods>
   // </keep-methods>
 }

@@ -23,6 +23,12 @@ export class FileSearchOrderInput {
   @Field(() => SortOrderEnum, {"nullable":true})
   public user?: SortOrderEnum | null;
 
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public createdAt?: SortOrderEnum | null;
+
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public updatedAt?: SortOrderEnum | null;
+
   // <keep-methods>
   // </keep-methods>
 }

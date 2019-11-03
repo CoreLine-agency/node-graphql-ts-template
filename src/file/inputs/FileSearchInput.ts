@@ -23,6 +23,12 @@ export class FileSearchInput {
   @Field(() => ReferenceSearchInput, {"nullable":true})
   public user?: ReferenceSearchInput | null;
 
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
+
   // <keep-methods>
   // </keep-methods>
 }

@@ -39,7 +39,33 @@ export function makeSortOrderEnumType(field: IFieldDefinition): IFieldDefinition
   };
 }
 
-export function generateInput(model: ISingleErModel, type: 'edit' | 'create' | 'nested' | 'search' | 'searchOrder') {
+export type InputType = 'edit' | 'create' | 'nested' | 'search' | 'searchOrder';
+
+export function generateDateFields(inputType: InputType) {
+  if (inputType === 'search') {
+    return `
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
+`;
+  }
+
+  if (inputType === 'searchOrder') {
+    return `
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public createdAt?: SortOrderEnum | null;
+
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public updatedAt?: SortOrderEnum | null;
+`;
+  }
+
+  return '';
+}
+
+export function generateInput(model: ISingleErModel, type: InputType) {
   const name = model.name;
 
   const transformToOptional = type === 'create' ? (x) => x : makeOptional;
@@ -120,7 +146,7 @@ ${uniq([
 @InputType()
 export class ${className} {
 ${allInputFields.map(generateField).join('\n\n')}
-
+${generateDateFields(type)}
   // <keep-methods>
   // </keep-methods>
 }

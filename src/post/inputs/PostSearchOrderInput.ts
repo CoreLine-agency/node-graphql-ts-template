@@ -23,6 +23,12 @@ export class PostSearchOrderInput {
   @Field(() => SortOrderEnum, {"nullable":true})
   public author?: SortOrderEnum | null;
 
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public createdAt?: SortOrderEnum | null;
+
+  @Field(() => SortOrderEnum, {"nullable":true})
+  public updatedAt?: SortOrderEnum | null;
+
   // <keep-methods>
   // </keep-methods>
 }
