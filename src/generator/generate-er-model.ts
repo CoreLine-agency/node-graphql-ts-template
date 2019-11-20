@@ -17,7 +17,7 @@ export function generateOneToOneOwnerDeclarations(relations: Array<ISingleErRela
     `  @OneToOne(() => ${r.otherTypeName}, (${lowerFirst(r.otherTypeName)}) => ${lowerFirst(r.otherTypeName)}.${r.otherName})
   @Field(() => ${r.otherTypeName} ${generateFieldArgs(r)})
   public ${getRelationName(r)}: Promise<${getRelationOtherTypeName(r)}>;
-`);
+`).join('\n');
 }
 
 export function generateOneToOneSecondaryDeclarations(relations: Array<ISingleErRelation>) {
