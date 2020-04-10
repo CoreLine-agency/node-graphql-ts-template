@@ -1,3 +1,6 @@
+# MIGRATION NOTICE
+## This project is archived and moved to https://github.com/ikatun/graphql-backend-helper
+
 ## Skeleton for Node.js applications written in TypeScript
 
 This project can be used as a template for a web service.
